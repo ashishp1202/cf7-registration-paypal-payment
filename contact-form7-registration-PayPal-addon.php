@@ -10,6 +10,9 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+define('PAYPAL_CLIENT_ID', 'your-client-id');
+define('PAYPAL_SECRET', 'your-secret-key');
+define('PAYPAL_MODE', 'sandbox'); // Change to 'live' for production
 
 define('CF7RA_PATH', plugin_dir_path(__FILE__));
 

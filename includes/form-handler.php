@@ -20,15 +20,27 @@ function cf7ra_handle_form_submission($contact_form)
     $email = sanitize_email($data[$field_mappings['email']] ?? '');
     $password = sanitize_text_field($data[$field_mappings['password']] ?? '');
     $cpt_title = sanitize_text_field($data[$field_mappings['cpt_title']] ?? '');
+    $plan = sanitize_text_field($data['payment_plan'] ?? 'one_time');
 
-    if (empty($email) || empty($password)) {
-        return;
+    // Store user details in session
+    session_start();
+    $_SESSION['cf7ra_email'] = $email;
+    $_SESSION['cf7ra_password'] = $password;
+    $_SESSION['cf7ra_cpt_title'] = $cpt_title;
+
+    $return_url = site_url('/payment-success');
+    $cancel_url = site_url('/payment-cancel');
+
+    if ($plan == 'one_time') {
+        $order = cf7ra_create_paypal_order(50, 'USD', $return_url, $cancel_url);
+    } elseif ($plan == 'monthly') {
+        $order = cf7ra_create_paypal_subscription_plan(10, 'MONTH', 'USD');
+    } else {
+        $order = cf7ra_create_paypal_subscription_plan(50, '6months', 'USD');
     }
 
-    $payment_success = cf7ra_process_paypal_payment($email);
-
-    if ($payment_success) {
-        $user_id = cf7ra_register_user($email, $password);
-        cf7ra_create_cpt($user_id, $cpt_title);
+    if ($order && isset($order['links'][1]['href'])) {
+        wp_redirect($order['links'][1]['href']); // Redirect user to PayPal
+        exit;
     }
 }
