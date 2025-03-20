@@ -2,7 +2,15 @@
 
 function cf7ra_register_menu()
 {
-    add_options_page('CF7 Registration Addon', 'CF7 Registration Addon', 'manage_options', 'cf7ra-settings', 'cf7ra_settings_page');
+    //add_options_page('CF7 Registration Addon', 'CF7 Registration Addon', 'manage_options', 'cf7ra-settings', 'cf7ra_settings_page');
+    add_submenu_page(
+        'wpcf7', // Parent slug (Contact Form 7)
+        'CF7 Registration Addon', // Page title
+        'CF7 Registration Addon', // Menu title
+        'manage_options', // Capability
+        'cf7ra-settings', // Menu slug
+        'cf7ra_settings_page' // Function callback
+    );
 }
 
 add_action('admin_menu', 'cf7ra_register_menu');

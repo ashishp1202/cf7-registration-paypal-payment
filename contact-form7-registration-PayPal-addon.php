@@ -16,7 +16,7 @@ define('PAYPAL_MODE', 'sandbox'); // Change to 'live' for production
 
 define('CF7RA_PATH', plugin_dir_path(__FILE__));
 
-require_once CF7RA_PATH . 'includes/settings.php';
+require_once CF7RA_PATH . 'includes/admin-settings.php';
 require_once CF7RA_PATH . 'includes/form-handler.php';
 require_once CF7RA_PATH . 'includes/paypal-api.php';
 require_once CF7RA_PATH . 'includes/user-registration.php';
