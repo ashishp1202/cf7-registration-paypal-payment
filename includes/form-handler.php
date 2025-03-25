@@ -18,6 +18,9 @@ function cf7ra_handle_form_submission($contact_form, $result)
     }
 
     $data = $submission->get_posted_data();
+    echo "<pre>";
+    print_r($data);
+    exit();
     $field_mappings = json_decode(get_option('cf7ra_field_mappings'), true);
 
     $email = sanitize_email($data[$field_mappings['email']] ?? '');

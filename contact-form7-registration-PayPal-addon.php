@@ -23,6 +23,7 @@ require_once CF7RA_PATH . 'includes/paypal-api.php';
 require_once CF7RA_PATH . 'includes/user-registration.php';
 require_once CF7RA_PATH . 'includes/cpt-handler.php';
 require_once CF7RA_PATH . 'includes/shortcodes.php';
+require_once CF7RA_PATH . 'includes/admin-metabox.php';
 
 function cf7ra_enqueue_scripts()
 {
@@ -32,6 +33,16 @@ function cf7ra_enqueue_scripts()
 
 //add_action('admin_enqueue_scripts', 'cf7ra_enqueue_scripts');
 
+add_action('wp_enqueue_scripts', 'cf7ra_enqueue_frontend_assets');
+
+function cf7ra_enqueue_frontend_assets()
+{
+    // Only load on frontend and for logged-in users (optional)
+    if (!is_admin()) {
+        wp_enqueue_style('cf7ra-frontend-style', plugin_dir_url(__FILE__) . 'assets/front-end/frontend.css');
+        wp_enqueue_script('cf7ra-frontend-script', plugin_dir_url(__FILE__) . 'assets/front-end/frontend.js', array(), null, true);
+    }
+}
 // Create custom role on plugin activation
 register_activation_hook(__FILE__, 'cf7ra_add_farm_seller_user_role');
 
