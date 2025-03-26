@@ -58,7 +58,15 @@ function cf7ra_handle_form_submission($contact_form, $result)
     }
 
     $farmPostID = cf7ra_create_cpt($user_id, $cpt_title);
-    add_post_meta($farmPostID, 'cf7ra_field_mappings_listing_plan', $form_id, true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_listing_plan', $data['listing-plan'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_asking_price', $data['asking-price'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_asking_price_rent_lease', $data['asking-price-rent-lease'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_land_unit_type', $data['land-unit-type'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_total_acres', $data['total-acres'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_total_hectare', $data['total-hectare'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_land_description', $data['land-description'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_current-taxes', $data['current-taxes'], true);
+
     /* if ($order && isset($order['links'][1]['href'])) {
         wp_redirect($order['links'][1]['href']); // Redirect user to PayPal
         exit;
