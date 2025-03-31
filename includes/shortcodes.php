@@ -176,7 +176,7 @@ function cf7ra_edit_user_listings()
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Listing Sale Type', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>  
+        '<td>
          <input id="listingSale" type="radio" name="cf7ra_field_mappings_custom_listing_sale_type" value="Listing is For Sale" ' . checked($listing_sale_type, 'Listing is For Sale', false) . '>
                              <label for="listingSale">Listing is For Sale</label>
                             <input id="listingLeaseRent" type="radio" name="cf7ra_field_mappings_custom_listing_sale_type" value="Listing is For Lease/Rent" ' . checked($listing_sale_type, 'Listing is For Lease/Rent', false) . '>
@@ -249,7 +249,7 @@ function cf7ra_edit_user_listings()
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Irrigated', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>    
+        '<td>
          <select id="cf7ra_field_irrigated" name="cf7ra_field_mappings_custom_irrigated">
                                     <option value="Yes" ' . selected($irrigated, 'Yes', false) . '>Yes</option>
                                     <option value="No" ' . selected($irrigated, 'No', false) . '>No</option>
@@ -275,7 +275,7 @@ function cf7ra_edit_user_listings()
                                     <option value="Heifers" ' . selected($capacity_type, 'Heifers', false) . '>Heifers</option>
                                     <option value="Calves" ' . selected($capacity_type, 'Calves', false) . '>Calves</option>
                                  </select>
-        
+
         </td>' .
         '</tr>';
 
@@ -332,7 +332,7 @@ function cf7ra_edit_user_listings()
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Manure Storage', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td> 
+        '<td>
         <input id="dailyHaul" type="radio" name="cf7ra_field_mappings_manure_storage" value="Daily Haul" ' . checked($manure_storage, 'Daily Haul', false) . '>
                                     <label for="dailyHaul">Daily Haul</label>
                                     <input id="slurrystore" type="radio" name="cf7ra_field_mappings_manure_storage" value="Slurrystore" ' . checked($manure_storage, 'Slurrystore', false) . '>
@@ -354,7 +354,7 @@ function cf7ra_edit_user_listings()
                                     <label for="yes">Yes</label>
                                     <input id="no" type="radio" name="cf7ra_field_mappings_type_of_housing" value="No" ' . checked($type_of_housing, 'No', false) . '>
                                     <label for="no">No</label>
-        
+
         </td>' .
         '</tr>';
 
@@ -362,7 +362,7 @@ function cf7ra_edit_user_listings()
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Listhouse Infoing Plan', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td> 
+        '<td>
          <select  id="cf7ra_field_mappings_listhouse_infoing_plan" name="cf7ra_field_mappings_house_info">
                                     <option value="True" ' . selected($listhouse_infoing_plan, 'True', false) . '>Listing Includes a Residence</option>
                                     <option value="False" ' . selected($listhouse_infoing_plan, 'False', false) . '>Listing does not include a Residence</option>
@@ -458,7 +458,7 @@ function cf7ra_edit_user_listings()
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Address State', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>  
+        '<td>
          <select id="cf7ra_field_mappings_address_state" name="cf7ra_field_mappings_address_state">
                                     <option value="--">Select a State/Province</option>
                                     <option value="Alabama" ' . selected($address_state, 'Alabama', false) . '>Alabama</option>
@@ -530,7 +530,7 @@ function cf7ra_edit_user_listings()
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Address Country', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td> 
+        '<td>
         <select id="cf7ra_field_mappings_add_country" name="cf7ra_field_mappings_address_country">
                                      <option value="--" ' . selected($address_country, "--", false) . '>Select a Country</option>
     <option value="United States" ' . selected($address_country, "United States", false) . '>United States</option>
@@ -611,7 +611,7 @@ function cf7ra_edit_user_listings()
 <option value="French Guiana" ' . selected($address_country, "French Guiana", false) . '>French Guiana</option>
 <option value="French Polynesia" ' . selected($address_country, "French Polynesia", false) . '>French Polynesia</option>
 <option value="French Southern Territories" ' . selected($address_country, "French Southern Territories", false) . '>French Southern Territories</option>
-                                  
+
 <option value="Gabon Republic" ' . selected($address_country, "Gabon Republic", false) . '>Gabon Republic</option>
 <option value="Gambia" ' . selected($address_country, "Gambia", false) . '>Gambia</option>
 <option value="Georgia" ' . selected($address_country, "Georgia", false) . '>Georgia</option>
@@ -758,7 +758,7 @@ function cf7ra_edit_user_listings()
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Address Display', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>  
+        '<td>
           <select id="cf7ra_field_mappings_add_display" name="cf7ra_field_mappings_address_display">
                                     <option value="">Select how to display the address...</option>
                                     <option value="Show Down to Street Location"  ' . selected($address_display, 'Show Down to Street Location', false) . '>Show Down to Street Location</option>
@@ -768,7 +768,7 @@ function cf7ra_edit_user_listings()
                                     <option value="Show Only Country" ' . selected($address_display, 'Show Only Country', false) . '>Show Only Country</option>
                                     <option value="Do not show the address" ' . selected($address_display, 'Do not show the address', false) . '>Do not show the address</option>
                                  </select>
-        
+
         </td>' .
         '</tr>';
 
@@ -783,11 +783,11 @@ function cf7ra_edit_user_listings()
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Listing no Type', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>    
+        '<td>
          <input id="randomlyGenerateNumber" name="cf7ra_field_mappings_listing_number_type" type="radio" value="Randomly Generate the Listing Number" ' . checked($listing_number_type, 'Randomly Generate the Listing Number', false) . '>
          <label for="randomlyGenerateNumber">Randomly Generate the Listing Number</label>
          <input id="customNumber" name="cf7ra_field_mappings_listing_number_type" type="radio" value="Custom Listing Number" ' . checked($listing_number_type, 'Custom Listing Number', false) . '>
-         <label for="randomlyGenerateNumber">Custom Listing Number</label>                  
+         <label for="randomlyGenerateNumber">Custom Listing Number</label>
         </td>' .
         '</tr>';
 
@@ -984,7 +984,7 @@ function cf7ra_edit_user_listings()
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Seller Calling Time', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>   
+        '<td>
          <select id="cf7ra_field_mappings_seller_call_time" name="cf7ra_field_mappings_custom_seller_calling_time">
                                     <option value="Early Morning" ' . selected($seller_calling_time, 'Early Morning', false) . '>Early Morning</option>
                                     <option value="Brunch" ' . selected($seller_calling_time, 'Brunch', false) . '>Brunch</option>
@@ -1017,7 +1017,7 @@ function cf7ra_edit_user_listings()
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Are You a Realtor', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>   
+        '<td>
          <select  id="cf7ra_field_mappings_retailer" name="cf7ra_field_mappings_custom_seller_is_realtor">
                                     <option value="Yes" ' . selected($seller_is_realtor, 'Yes', false) . '>Yes</option>
                                     <option value="No" ' . selected($seller_is_realtor, 'No', false) . '>No</option>

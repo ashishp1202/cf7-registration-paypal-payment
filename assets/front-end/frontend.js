@@ -51,7 +51,7 @@ jQuery(document).ready(function ($) {
       data: {
         action: "delete_farm_listing",
         post_id: postId,
-        nonce: nonce
+        nonce: nonce,
       },
       dataType: "json",
       success: function (response) {
@@ -63,7 +63,7 @@ jQuery(document).ready(function ($) {
       },
       error: function (xhr, status, error) {
         console.error("AJAX Error:", error);
-      }
+      },
     });
   });
 });

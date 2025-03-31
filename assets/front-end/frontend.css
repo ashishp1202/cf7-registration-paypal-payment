@@ -1,20 +1,16 @@
-.hidden-initally {
-  display: none;
-}
-
-.form_html_wrap [type=date],
-.form_html_wrap [type=datetime-local],
-.form_html_wrap [type=datetime],
-.form_html_wrap [type=email],
-.form_html_wrap [type=month],
-.form_html_wrap [type=number],
-.form_html_wrap [type=password],
-.form_html_wrap [type=search],
-.form_html_wrap [type=tel],
-.form_html_wrap [type=text],
-.form_html_wrap [type=time],
-.form_html_wrap [type=url],
-.form_html_wrap [type=week],
+.form_html_wrap [type="date"],
+.form_html_wrap [type="datetime-local"],
+.form_html_wrap [type="datetime"],
+.form_html_wrap [type="email"],
+.form_html_wrap [type="month"],
+.form_html_wrap [type="number"],
+.form_html_wrap [type="password"],
+.form_html_wrap [type="search"],
+.form_html_wrap [type="tel"],
+.form_html_wrap [type="text"],
+.form_html_wrap [type="time"],
+.form_html_wrap [type="url"],
+.form_html_wrap [type="week"],
 .form_html_wrap textarea,
 .form_html_wrap select {
   background: #ffffff;
@@ -118,12 +114,12 @@
   visibility: hidden;
 }
 
-.radio_btn_wrap input:checked+label::before {
+.radio_btn_wrap input:checked + label::before {
   border-color: #2b79ee;
   background: #2b79ee;
 }
 
-.radio_btn_wrap input:checked+label::after {
+.radio_btn_wrap input:checked + label::after {
   opacity: 1;
   visibility: visible;
 }
@@ -155,14 +151,14 @@
   border-radius: 0;
 }
 
-.check_btn_wrap input:checked+label::after {
+.check_btn_wrap input:checked + label::after {
   border-radius: 0;
   display: none;
 }
 
-.check_btn_wrap input:checked+label::before {
+.check_btn_wrap input:checked + label::before {
   content: "\2713";
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   font-size: 15px;
   line-height: 16px;
   text-align: center;
@@ -170,7 +166,7 @@
 }
 
 .submitButton {
-  color: #FFFFFF;
+  color: #ffffff;
   border-width: 0px;
   border-radius: 100px;
   font-size: 16px;
