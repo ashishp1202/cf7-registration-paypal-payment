@@ -16,10 +16,13 @@ function cf7ra_get_paypal_token()
     );
 
     $response = wp_remote_post($url, $args);
-
+    echo "<pre>";
+    print_r($response);
+    exit();
     if (is_wp_error($response)) {
         return false;
     }
+
 
     $body = json_decode(wp_remote_retrieve_body($response), true);
     return $body['access_token'] ?? false;
@@ -56,7 +59,9 @@ function cf7ra_create_paypal_order($amount, $currency = 'USD', $return_url, $can
     );
 
     $response = wp_remote_post($url, $args);
-
+    echo "<pre>";
+    print_r($response);
+    exit();
     if (is_wp_error($response)) {
         return false;
     }
