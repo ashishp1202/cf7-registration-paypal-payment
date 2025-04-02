@@ -16,10 +16,13 @@ function cf7ra_get_paypal_token()
     );
 
     $response = wp_remote_post($url, $args);
-
+    /* echo "<pre>";
+    print_r($response);
+    exit(); */
     if (is_wp_error($response)) {
         return false;
     }
+
 
     $body = json_decode(wp_remote_retrieve_body($response), true);
     return $body['access_token'] ?? false;
@@ -105,7 +108,9 @@ function cf7ra_create_paypal_subscription_plan($amount, $interval, $currency = '
     );
 
     $response = wp_remote_post($url, $args);
-
+    echo "<pre>";
+    print_r($response);
+    exit();
     if (is_wp_error($response)) {
         return false;
     }
@@ -136,4 +141,21 @@ function cf7ra_capture_paypal_payment($order_id)
     }
 
     return json_decode(wp_remote_retrieve_body($response), true);
+}
+
+function cf7ra_extract_transaction_data($response)
+{
+    if (!$response || !isset($response['status']) || $response['status'] !== 'COMPLETED') {
+        return false;
+    }
+
+    $transaction = $response['purchase_units'][0]['payments']['captures'][0];
+
+    return [
+        'transaction_id' => $transaction['id'],
+        'amount'         => $transaction['amount']['value'],
+        'currency'       => $transaction['amount']['currency_code'],
+        'payer_email'    => $response['payer']['email_address'],
+        'payer_name'     => $response['payer']['name']['given_name'] . ' ' . $response['payer']['name']['surname'],
+    ];
 }
