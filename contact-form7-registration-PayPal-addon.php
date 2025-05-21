@@ -41,6 +41,7 @@ require_once CF7RA_PATH . 'includes/cpt-handler.php';
 require_once CF7RA_PATH . 'includes/shortcodes.php';
 require_once CF7RA_PATH . 'includes/admin-metabox.php';
 require_once CF7RA_PATH . 'includes/template-loader.php';
+require_once CF7RA_PATH . 'includes/ajax-functions.php';
 
 function cf7ra_enqueue_scripts()
 {

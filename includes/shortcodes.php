@@ -144,13 +144,86 @@ function cf7ra_display_listings()
         <?php if ($i == 3) {
             $i == 0;
         } ?>
-    <?php
+        <?php
         $i++;
     endwhile;
 
     //echo '</div>';
 
     wp_reset_postdata();
+
+    return ob_get_clean();
+}
+
+add_shortcode('cf7ra_myfav_listings', 'cf7ra_myfav_display_listings');
+
+function cf7ra_myfav_display_listings()
+{
+    if (!is_user_logged_in()) {
+        return '<p>You must be logged in to view your listings.</p>';
+    }
+
+
+
+    $user_id = get_current_user_id();
+    if ($user_id) {
+        $favorites = get_user_meta($user_id, 'favorite_posts', true);
+        $i = 1;
+        foreach ($favorites as $key => $favorite) {
+            $post_id = $favorite;
+            $listing_plan = get_post_meta($post_id, 'cf7ra_field_mappings_listing_plan', true);
+            $total_acres = get_post_meta($post_id, 'cf7ra_field_mappings_total_acres',  true);
+            $farm_capacity = get_post_meta($post_id, 'cf7ra_field_mappings_farm_capacity', true);
+            $asking_price = get_post_meta($post_id, 'cf7ra_field_mappings_asking_price', true);
+        ?>
+            <div class="et_pb_column et_pb_column_1_3 et_pb_column_9 et_pb_css_mix_blend_mode_passthrough padding-up-btm-30 <?php if ($i == 3) { ?>  et-last-child <?php } ?>">
+                <div class="et_pb_module et_pb_image et_pb_image_0 et_pb_has_overlay">
+                    <a href="<?php echo get_permalink($post_id); ?>"><span class="et_pb_image_wrap"><img src="<?php echo get_the_post_thumbnail_url($post_id, 'medium'); ?>" /></span></a>
+                </div>
+                <div class="et_pb_module et_pb_heading et_pb_heading_4 et_pb_bg_layout_">
+                    <div class="et_pb_heading_container">
+                        <h5 class="et_pb_module_heading">$<?php echo $asking_price; ?></h5>
+                    </div>
+                </div>
+                <div class="et_pb_module et_pb_heading et_pb_heading_5 et_pb_bg_layout_">
+                    <div class="et_pb_heading_container">
+                        <h6 class="et_pb_module_heading">4 Beds, 3 Baths, 2240 Sqft</h6>
+                    </div>
+                </div>
+                <div class="et_pb_module et_pb_text et_pb_text_7 et_pb_text_align_left et_pb_bg_layout_light">
+                    <div class="et_pb_text_inner">
+                        <p><span><?php echo $farm_capacity, ' Cows'; ?></span></p>
+                    </div>
+                </div>
+                <div class="et_pb_button_module_wrapper et_pb_button_0_wrapper et_pb_module">
+                    <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light" href="">Contact Agent</a>
+
+                    <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites add-to-fav-trigger" style="<?php if (!$is_favorite) {
+                                                                                                                                    echo 'display: inline-block;';
+                                                                                                                                } else {
+                                                                                                                                    echo 'display: none;';
+                                                                                                                                } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
+
+                    <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites remove-from-fav-trigger" style="<?php if ($is_favorite) {
+                                                                                                                                            echo 'display: inline-block;';
+                                                                                                                                        } else {
+                                                                                                                                            echo 'display: none;';
+                                                                                                                                        } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
+
+                </div>
+            </div>
+        <?php if ($i == 3) {
+                $i == 0;
+            }
+            $i++;
+        }
+    } else {
+        echo "Please login to review.";
+    }
+
+    ob_start();
+    //echo '<div class="et_pb_row et_pb_row_5 et_pb_gutters2">';
+
 
     return ob_get_clean();
 }
@@ -1418,7 +1491,7 @@ function cf7ra_edit_user_listings()
             '<label for="hcf_photo_file">' . __('Current Photos', 'cf7-reg-paypal-addon') . '</label>' .
             '</th>' .
             '<td>';
-    ?>
+        ?>
 
         <?php foreach ($photo_url as $image_url) { ?>
             <img src="<?php echo esc_url($image_url); ?>" style="max-width:300px; height:auto;" />

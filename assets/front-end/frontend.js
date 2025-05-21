@@ -91,16 +91,7 @@ jQuery(document).ready(function ($) {
       dataType: "json",
       success: function (response) {
         if (response.success) {
-          $("#listing-" + postId).remove();
-          renumberTable();
-          // Show success message at the top
-          $("#message-container")
-            .html(
-              "<p class='success-message' style='color:green;'>Listing deleted successfully!</p>"
-            )
-            .fadeIn()
-            .delay(2000)
-            .fadeOut();
+          $(".add-remove-favorites").toggle();
         } else {
           alert("Error: " + response.message);
         }
@@ -111,7 +102,7 @@ jQuery(document).ready(function ($) {
     });
   });
   $(".remove-from-fav-trigger").click(function () {
-    postId = $(this).data("id");
+    postId = $(this).data("post-id");
 
     if (!confirm("Are you sure you want to delete this listing?")) {
       return;
@@ -126,16 +117,7 @@ jQuery(document).ready(function ($) {
       dataType: "json",
       success: function (response) {
         if (response.success) {
-          $("#listing-" + postId).remove();
-          renumberTable();
-          // Show success message at the top
-          $("#message-container")
-            .html(
-              "<p class='success-message' style='color:green;'>Listing deleted successfully!</p>"
-            )
-            .fadeIn()
-            .delay(2000)
-            .fadeOut();
+          $(".add-remove-favorites").toggle();
         } else {
           alert("Error: " + response.message);
         }
