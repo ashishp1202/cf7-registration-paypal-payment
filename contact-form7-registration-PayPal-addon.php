@@ -32,10 +32,10 @@ if ($cf7ra_paypal_mode === 'live') {
 define('PAYPAL_MODE', $cf7ra_paypal_mode); // Change to 'live' for production
 
 define('CF7RA_PATH', plugin_dir_path(__FILE__));
-ini_set('display_errors', 1);
+//ini_set('display_errors', 1);
 require_once CF7RA_PATH . 'includes/admin-settings.php';
 require_once CF7RA_PATH . 'includes/form-handler.php';
-require_once CF7RA_PATH . 'includes/paypal-api.php';
+//require_once CF7RA_PATH . 'includes/paypal-api.php';
 require_once CF7RA_PATH . 'includes/user-registration.php';
 require_once CF7RA_PATH . 'includes/cpt-handler.php';
 require_once CF7RA_PATH . 'includes/shortcodes.php';

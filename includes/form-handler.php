@@ -1,7 +1,7 @@
 <?php
 //add_action('wpcf7_mail_sent', 'cf7ra_handle_form_submission');
 
-add_action('wpcf7_submit', 'cf7ra_handle_form_submission', 10, 2);
+add_action('wpcf7_submit', 'cf7ra_handle_form_submission');
 
 function cf7ra_handle_form_submission($contact_form)
 {
@@ -12,6 +12,8 @@ function cf7ra_handle_form_submission($contact_form)
     }
 
     $submission = WPCF7_Submission::get_instance();
+    $uploaded_files = $submission->uploaded_files();
+    $uploaded_urls = [];
 
     if (!$submission) {
         return;
@@ -25,7 +27,7 @@ function cf7ra_handle_form_submission($contact_form)
     $cpt_title = sanitize_text_field($data[$field_mappings['cpt_title']] ?? '');
     $firstname = sanitize_text_field($data[$field_mappings['firstname']] ?? '');
     $lastname = sanitize_text_field($data[$field_mappings['lastname']] ?? '');
-    $plan = sanitize_text_field($data['payment_plan'] ?? 'one_time');
+    //  $plan = sanitize_text_field($data['payment_plan'] ?? 'monthly');
 
     // Store user details in session
     session_start();
@@ -47,7 +49,6 @@ function cf7ra_handle_form_submission($contact_form)
         update_user_meta($user_id, "first_name",  $firstname);
         update_user_meta($user_id, "last_name",  $lastname);
     }
-
     $farmPostID = cf7ra_create_cpt($user_id, $cpt_title);
     add_post_meta($farmPostID, 'cf7ra_field_mappings_listing_plan', $data['listing-plan'][0], true);
     add_post_meta($farmPostID, 'cf7ra_field_mappings_asking_price', $data['asking-price'], true);
@@ -133,21 +134,99 @@ function cf7ra_handle_form_submission($contact_form)
     // $displayFirstName = isset($data['displayFirstName']) ? implode(',', $data['displayFirstName']) : '';
     $displayFirstName = $data['displayFirstName'][0];
     add_post_meta($farmPostID, 'cf7ra_field_mappings_first_name', $displayFirstName, true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_photo_desc', $data['photo-description'], true);
 
-    if ($plan == 'one_time') {
-        $order = cf7ra_create_paypal_order(50, 'USD', $return_url, $cancel_url);
-    } elseif ($plan == 'monthly') {
-        $order = cf7ra_create_paypal_subscription_plan(10, 'MONTH', 'USD');
-    } else {
-        $order = cf7ra_create_paypal_subscription_plan(50, '6months', 'USD');
-    }
-    foreach ($order['links'] as $link) {
-        if ($link['rel'] === 'approve') {
-            $GLOBALS['cf7ra_next_redirect'] = $link['href'];
-            $contact_form->skip_mail = true; // Optional: skip CF7 email if needed
-            return;
+    // Check if 'multiplefile' field has uploaded files
+    if (!empty($uploaded_files['multiplefile'])) {
+        $files = $uploaded_files['multiplefile'];
+
+        // Ensure $files is an array
+        if (!is_array($files)) {
+            $files = [$files];
+        }
+
+        foreach ($files as $file_path) {
+            if (file_exists($file_path)) {
+                $file_name = basename($file_path);
+                $file_type = wp_check_filetype($file_name, null);
+
+                // Prepare the file array
+                $upload = [
+                    'name'     => $file_name,
+                    'type'     => $file_type['type'],
+                    'tmp_name' => $file_path,
+                    'error'    => 0,
+                    'size'     => filesize($file_path),
+                ];
+
+                // Include necessary WordPress files
+                require_once(ABSPATH . 'wp-admin/includes/file.php');
+                require_once(ABSPATH . 'wp-admin/includes/media.php');
+                require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+                // Upload the file to the Media Library
+                $overrides = ['test_form' => false];
+                $file = wp_handle_sideload($upload, $overrides);
+
+                if (!isset($file['error'])) {
+                    $attachment = [
+                        'post_mime_type' => $file['type'],
+                        'post_title'     => sanitize_file_name($file_name),
+                        'post_content'   => '',
+                        'post_status'    => 'inherit'
+                    ];
+
+                    $attach_id = wp_insert_attachment($attachment, $file['file']);
+                    $attach_data = wp_generate_attachment_metadata($attach_id, $file['file']);
+                    wp_update_attachment_metadata($attach_id, $attach_data);
+
+                    // Get the URL of the uploaded file
+                    $url = wp_get_attachment_url($attach_id);
+                    $uploaded_urls[] = $url;
+                }
+            }
+        }
+
+        // Save the URLs to post meta
+        if (!empty($uploaded_urls)) {
+            // Replace 'your_post_id' with the actual post ID
+            update_post_meta($farmPostID, 'cf7ra_field_mappings_photo_upload', $uploaded_urls);
         }
     }
+
+    // if (isset($files['photo-upload'][0])) {
+    //     require_once(ABSPATH . 'wp-admin/includes/file.php');
+    //     require_once(ABSPATH . 'wp-admin/includes/media.php');
+    //     require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+    //     // Move file into Media Library
+    //     $attachment_id = media_handle_sideload([
+    //         'name'     => basename($files['photo-upload'][0]),
+    //         'tmp_name' => $files['photo-upload'][0]
+    //     ], 0);
+
+    //     if (!is_wp_error($attachment_id)) {
+    //         $url = wp_get_attachment_url($attachment_id);
+    //         add_post_meta($farmPostID, 'cf7ra_field_mappings_photo_upload', esc_url($url));
+    //     }
+    // }
+
+
+
+    // if ($plan == 'one_time') {
+    //     $order = cf7ra_create_paypal_order(50, 'USD', $return_url, $cancel_url);
+    // } elseif ($plan == 'monthly') {
+    //     $order = cf7ra_create_paypal_subscription_plan(10, 'MONTH', 'USD');
+    // } else {
+    //     $order = cf7ra_create_paypal_subscription_plan(50, '6months', 'USD');
+    // }
+    // foreach ($order['links'] as $link) {
+    //     if ($link['rel'] === 'approve') {
+    //         $GLOBALS['cf7ra_next_redirect'] = $link['href'];
+    //         $contact_form->skip_mail = true; // Optional: skip CF7 email if needed
+    //         return;
+    //     }
+    // }
 }
 add_filter('wpcf7_ajax_json_echo', 'cf7ra_custom_json_redirect', 10, 2);
 
@@ -158,3 +237,7 @@ function cf7ra_custom_json_redirect($response, $result)
     }
     return $response;
 }
+
+add_filter('wpcf7_spam', '__return_false');
+add_filter('wpcf7_skip_mail', '__return_false');
+add_filter('wpcf7_remove_uploaded_file', '__return_false');

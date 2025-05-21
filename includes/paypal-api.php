@@ -77,7 +77,7 @@ function cf7ra_create_paypal_subscription_plan($amount, $interval, $currency = '
 
     $args = array(
         'body'    => json_encode(array(
-            'product_id' => 'YOUR_PRODUCT_ID', // Replace with actual product ID
+            'product_id' => 'PROD-9K994180EV974344UM72UASQ', // Replace with actual product ID
             'name'       => "Subscription Plan - $interval",
             'billing_cycles' => array(
                 array(
@@ -158,4 +158,31 @@ function cf7ra_extract_transaction_data($response)
         'payer_email'    => $response['payer']['email_address'],
         'payer_name'     => $response['payer']['name']['given_name'] . ' ' . $response['payer']['name']['surname'],
     ];
+}
+$products = get_paypal_products();
+echo "<pre>";
+print_r($products);
+exit();
+function get_paypal_products()
+{
+    $access_token = cf7ra_get_paypal_token();
+    echo "<pre>";
+    print_r($access_token);
+    if (!$access_token) return 'Error retrieving token';
+
+    $url = 'https://api-m.sandbox.paypal.com/v1/catalogs/products';
+
+    $response = wp_remote_get($url, [
+        'headers' => [
+            'Authorization' => 'Bearer ' . $access_token,
+            'Content-Type'  => 'application/json',
+        ]
+    ]);
+    echo "<pre>";
+    print_r($response);
+    exit();
+    if (is_wp_error($response)) return 'Error fetching products';
+
+    $body = json_decode(wp_remote_retrieve_body($response));
+    return $body->products ?? [];
 }

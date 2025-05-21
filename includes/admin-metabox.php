@@ -71,6 +71,9 @@ function cf7ra__show_from_data($post)
     $street_address_checkbox = get_post_meta($post->ID, 'cf7ra_field_mappings_display_street_address', true);
     $lastname_checkbox = get_post_meta($post->ID, 'cf7ra_field_mappings_last_name', true);
     $firstname_checkbox = get_post_meta($post->ID, 'cf7ra_field_mappings_first_name', true);
+    // $photo_url = get_post_meta($post->ID, 'cf7ra_field_mappings_photo_upload', true);
+    $photo_url = get_post_meta($post->ID, 'cf7ra_field_mappings_photo_upload', true);
+    $photo_description = get_post_meta($post->ID, 'cf7ra_field_mappings_photo_desc', true);
 
 
 
@@ -93,7 +96,7 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Listing Sale Type', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>  
+        '<td>
          <input id="listingSale" type="radio" name="cf7ra_field_mappings_custom_listing_sale_type" value="Listing is For Sale" ' . checked($listing_sale_type, 'Listing is For Sale', false) . '>
                              <label for="listingSale">Listing is For Sale</label>
                             <input id="listingLeaseRent" type="radio" name="cf7ra_field_mappings_custom_listing_sale_type" value="Listing is For Lease/Rent" ' . checked($listing_sale_type, 'Listing is For Lease/Rent', false) . '>
@@ -166,7 +169,7 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Irrigated', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>    
+        '<td>
          <select id="cf7ra_field_irrigated" name="cf7ra_field_mappings_custom_irrigated">
                                     <option value="Yes" ' . selected($irrigated, 'Yes', false) . '>Yes</option>
                                     <option value="No" ' . selected($irrigated, 'No', false) . '>No</option>
@@ -192,7 +195,7 @@ function cf7ra__show_from_data($post)
                                     <option value="Heifers" ' . selected($capacity_type, 'Heifers', false) . '>Heifers</option>
                                     <option value="Calves" ' . selected($capacity_type, 'Calves', false) . '>Calves</option>
                                  </select>
-        
+
         </td>' .
         '</tr>';
 
@@ -249,7 +252,7 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Manure Storage', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td> 
+        '<td>
         <input id="dailyHaul" type="radio" name="cf7ra_field_mappings_manure_storage" value="Daily Haul" ' . checked($manure_storage, 'Daily Haul', false) . '>
                                     <label for="dailyHaul">Daily Haul</label>
                                     <input id="slurrystore" type="radio" name="cf7ra_field_mappings_manure_storage" value="Slurrystore" ' . checked($manure_storage, 'Slurrystore', false) . '>
@@ -271,7 +274,7 @@ function cf7ra__show_from_data($post)
                                     <label for="yes">Yes</label>
                                     <input id="no" type="radio" name="cf7ra_field_mappings_type_of_housing" value="No" ' . checked($type_of_housing, 'No', false) . '>
                                     <label for="no">No</label>
-        
+
         </td>' .
         '</tr>';
 
@@ -279,7 +282,7 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Listhouse Infoing Plan', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td> 
+        '<td>
          <select  id="cf7ra_field_mappings_listhouse_infoing_plan" name="cf7ra_field_mappings_house_info">
                                     <option value="True" ' . selected($listhouse_infoing_plan, 'True', false) . '>Listing Includes a Residence</option>
                                     <option value="False" ' . selected($listhouse_infoing_plan, 'False', false) . '>Listing does not include a Residence</option>
@@ -446,7 +449,7 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Address Country', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td> 
+        '<td>
         <select id="cf7ra_field_mappings_add_country" name="cf7ra_field_mappings_address_country">
     <option value="United States" ' . selected($address_country, "United States", false) . '>United States</option>
     <option value="Afghanistan" ' . selected($address_country, "Afghanistan", false) . '>Afghanistan</option>
@@ -526,7 +529,7 @@ function cf7ra__show_from_data($post)
 <option value="French Guiana" ' . selected($address_country, "French Guiana", false) . '>French Guiana</option>
 <option value="French Polynesia" ' . selected($address_country, "French Polynesia", false) . '>French Polynesia</option>
 <option value="French Southern Territories" ' . selected($address_country, "French Southern Territories", false) . '>French Southern Territories</option>
-                                  
+
 <option value="Gabon Republic" ' . selected($address_country, "Gabon Republic", false) . '>Gabon Republic</option>
 <option value="Gambia" ' . selected($address_country, "Gambia", false) . '>Gambia</option>
 <option value="Georgia" ' . selected($address_country, "Georgia", false) . '>Georgia</option>
@@ -673,7 +676,7 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Address Display', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>  
+        '<td>
           <select id="cf7ra_field_mappings_add_display" name="cf7ra_field_mappings_address_display">
                                     <option value="">Select how to display the address...</option>
                                     <option value="Show Down to Street Location"  ' . selected($address_display, 'Show Down to Street Location', false) . '>Show Down to Street Location</option>
@@ -683,7 +686,7 @@ function cf7ra__show_from_data($post)
                                     <option value="Show Only Country" ' . selected($address_display, 'Show Only Country', false) . '>Show Only Country</option>
                                     <option value="Do not show the address" ' . selected($address_display, 'Do not show the address', false) . '>Do not show the address</option>
                                  </select>
-        
+
         </td>' .
         '</tr>';
 
@@ -698,11 +701,11 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Listing no Type', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>    
+        '<td>
          <input id="randomlyGenerateNumber" name="cf7ra_field_mappings_listing_number_type" type="radio" value="Randomly Generate the Listing Number" ' . checked($listing_number_type, 'Randomly Generate the Listing Number', false) . '>
          <label for="randomlyGenerateNumber">Randomly Generate the Listing Number</label>
          <input id="customNumber" name="cf7ra_field_mappings_listing_number_type" type="radio" value="Custom Listing Number" ' . checked($listing_number_type, 'Custom Listing Number', false) . '>
-         <label for="randomlyGenerateNumber">Custom Listing Number</label>                  
+         <label for="randomlyGenerateNumber">Custom Listing Number</label>
         </td>' .
         '</tr>';
 
@@ -805,7 +808,7 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Seller State', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>   
+        '<td>
          <select id="cf7ra_field_mappings_custom_seller_state" name="cf7ra_field_mappings_custom_seller_state">
                                     <option value="Alabama" ' . selected($seller_state, 'Alabama', false) . '>Alabama</option>
                                     <option value="Alaska" ' . selected($seller_state, 'Alaska', false) . '>Alaska</option>
@@ -869,7 +872,7 @@ function cf7ra__show_from_data($post)
                                     <option value="Wisconsin" ' . selected($seller_state, 'Wisconsin', false) . '>Wisconsin</option>
                                     <option value="Wyoming" ' . selected($seller_state, 'Wyoming', false) . '>Wyoming</option>
                                  </select>
-        
+
         </td>' .
         '</tr>';
 
@@ -921,7 +924,7 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Seller Calling Time', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>   
+        '<td>
          <select id="cf7ra_field_mappings_seller_call_time" name="cf7ra_field_mappings_custom_seller_calling_time">
                                     <option value="Early Morning" ' . selected($seller_calling_time, 'Early Morning', false) . '>Early Morning</option>
                                     <option value="Brunch" ' . selected($seller_calling_time, 'Brunch', false) . '>Brunch</option>
@@ -954,7 +957,7 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Are You a Realtor', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>   
+        '<td>
          <select  id="cf7ra_field_mappings_retailer" name="cf7ra_field_mappings_custom_seller_is_realtor">
                                     <option value="Yes" ' . selected($seller_is_realtor, 'Yes', false) . '>Yes</option>
                                     <option value="No" ' . selected($seller_is_realtor, 'No', false) . '>No</option>
@@ -975,6 +978,36 @@ function cf7ra__show_from_data($post)
         '</th>' .
         '<td>    <input type="text" id="cf7ra_field_acc_verify_pass" name="cf7ra_field_mappings_custom_account_verify_password" value="' . esc_attr($account_verify_password) . '" style="width:100%;" /></td>' .
         '</tr>';
+    if (!empty($photo_url) && is_array($photo_url)) {
+        echo '<tr class="form-field">' .
+            '<th scope="row">' .
+            '<label for="hcf_photo_file">' . __('Current Photos', 'cf7-reg-paypal-addon') . '</label>' .
+            '</th>' .
+            '<td>';
+?>
+        <?php foreach ($photo_url as $image_url) { ?>
+            <img src="<?php echo esc_url($image_url); ?>" style="max-width:300px; height:auto;" />
+<?php  }
+        '</td>' .
+            '</tr>';
+    }
+
+    echo '<tr class="form-field">' .
+        '<th scope="row">' .
+        '<label for="hcf_photo_file">' . ($photo_url ? 'Change Photos:' : 'Upload a Photo:') . '</label>' .
+        '</th>' .
+        '<td>    <input type="file" id="my_file_input" name="my_file_input[]" value="" multiple  /></td>' .
+        '</tr>';
+
+    // Hidden nonce for security
+    wp_nonce_field('cf7_admin_photo_upload_nonce', 'cf7_admin_photo_upload_nonce_field');
+
+    echo '<tr class="form-field">' .
+        '<th scope="row">' .
+        '<label for="hcf_photo_desc">' . __('Photo Description', 'cf7-reg-paypal-addon') . '</label>' .
+        '</th>' .
+        '<td>    <input type="textarea" id="cf7ra_field_photo_description" name="cf7ra_field_mappings_photo_desc" value="' . esc_attr($photo_description) . '" style="width:100%;" /></td>' .
+        '</tr>';
 
     echo '</table>';
 }
@@ -983,7 +1016,6 @@ add_action('save_post', 'cf7ra_save_custom_meta_box_data');
 
 function cf7ra_save_custom_meta_box_data($post_id)
 {
-
     // Check if this is an autosave
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
@@ -1250,6 +1282,57 @@ function cf7ra_save_custom_meta_box_data($post_id)
         // If the checkbox is unchecked, delete the post meta
         delete_post_meta($post_id, 'cf7ra_field_mappings_first_name');
     }
+
+    if (isset($_POST['cf7ra_field_mappings_photo_desc'])) {
+        update_post_meta($post_id, 'cf7ra_field_mappings_photo_desc', sanitize_text_field($_POST['cf7ra_field_mappings_photo_desc']));
+    }
+    // Security check
+    if (
+        !isset($_POST['cf7_admin_photo_upload_nonce_field']) ||
+        !wp_verify_nonce($_POST['cf7_admin_photo_upload_nonce_field'], 'cf7_admin_photo_upload_nonce')
+    ) {
+        return;
+    }
+
+
+    // Check if files are uploaded
+    if (!empty($_FILES['my_file_input']['name'][0])) {
+        $files = $_FILES['my_file_input'];
+        $uploaded_urls   = [];
+
+        // Loop through each file
+        foreach ($files['name'] as $key => $value) {
+            if ($files['name'][$key]) {
+                $file = [
+                    'name'     => $files['name'][$key],
+                    'type'     => $files['type'][$key],
+                    'tmp_name' => $files['tmp_name'][$key],
+                    'error'    => $files['error'][$key],
+                    'size'     => $files['size'][$key]
+                ];
+
+                $_FILES['single_file'] = $file;
+
+                // Use WordPress functions to handle upload
+                require_once(ABSPATH . 'wp-admin/includes/image.php');
+                require_once(ABSPATH . 'wp-admin/includes/file.php');
+                require_once(ABSPATH . 'wp-admin/includes/media.php');
+                $attachment_id = media_handle_upload('single_file', $post_id);
+
+                if (!is_wp_error($attachment_id)) {
+                    $url = wp_get_attachment_url($attachment_id);
+                    if ($url) {
+                        $uploaded_urls[] = esc_url_raw($url);
+                    }
+                }
+                update_post_meta($post_id, 'cf7ra_field_mappings_photo_upload', $uploaded_urls);
+            }
+        }
+
+        if (!empty($file_urls)) {
+            update_post_meta($post_id, 'cf7ra_field_mappings_photo_upload', $file_urls);
+        }
+    }
 }
 
 // ajax call for delete action
@@ -1277,3 +1360,9 @@ function delete_farm_listing()
     }
 }
 add_action('wp_ajax_delete_farm_listing', 'delete_farm_listing');
+
+function add_multipart_form_data_to_post_edit()
+{
+    echo ' enctype="multipart/form-data"';
+}
+add_action('post_edit_form_tag', 'add_multipart_form_data_to_post_edit');
