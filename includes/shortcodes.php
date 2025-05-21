@@ -90,17 +90,24 @@ function cf7ra_display_listings()
     <?php
     $i = 1;
     while ($listings->have_posts()) : $listings->the_post();
-        $listing_plan = get_post_meta(get_the_ID(), 'cf7ra_field_mappings_listing_plan', true);
-        $total_acres = get_post_meta(get_the_ID(), 'cf7ra_field_mappings_total_acres',  true);
-        $farm_capacity = get_post_meta(get_the_ID(), 'cf7ra_field_mappings_farm_capacity', true);
-        $asking_price = get_post_meta(get_the_ID(), 'cf7ra_field_mappings_asking_price', true);
         $post_id = get_the_ID();
+        $listing_plan = get_post_meta($post_id, 'cf7ra_field_mappings_listing_plan', true);
+        $total_acres = get_post_meta($post_id, 'cf7ra_field_mappings_total_acres',  true);
+        $farm_capacity = get_post_meta($post_id, 'cf7ra_field_mappings_farm_capacity', true);
+        $asking_price = get_post_meta($post_id, 'cf7ra_field_mappings_asking_price', true);
+
         $nonce = wp_create_nonce('delete_listing_' . $post_id);
+        $user_id = get_current_user_id();
+        if ($user_id) {
+            $favorites = get_user_meta($user_id, 'favorite_posts', true);
+            $is_favorite = is_array($favorites) && in_array($post_id, $favorites);
+        }
+
     ?>
 
         <div class="et_pb_column et_pb_column_1_3 et_pb_column_9 et_pb_css_mix_blend_mode_passthrough padding-up-btm-30 <?php if ($i == 3) { ?>  et-last-child <?php } ?>">
             <div class="et_pb_module et_pb_image et_pb_image_0 et_pb_has_overlay">
-                <a href="<?php echo get_permalink(get_the_ID()); ?>"><span class="et_pb_image_wrap"><img src="<?php echo get_the_post_thumbnail_url(get_the_ID(), 'medium'); ?>" /></span></a>
+                <a href="<?php echo get_permalink($post_id); ?>"><span class="et_pb_image_wrap"><img src="<?php echo get_the_post_thumbnail_url($post_id, 'medium'); ?>" /></span></a>
             </div>
             <div class="et_pb_module et_pb_heading et_pb_heading_4 et_pb_bg_layout_">
                 <div class="et_pb_heading_container">
@@ -119,6 +126,19 @@ function cf7ra_display_listings()
             </div>
             <div class="et_pb_button_module_wrapper et_pb_button_0_wrapper et_pb_module">
                 <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light" href="">Contact Agent</a>
+
+                <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites add-to-fav-trigger" style="<?php if (!$is_favorite) {
+                                                                                                                                echo 'display: inline-block;';
+                                                                                                                            } else {
+                                                                                                                                echo 'display: none;';
+                                                                                                                            } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
+
+                <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites remove-from-fav-trigger" style="<?php if ($is_favorite) {
+                                                                                                                                        echo 'display: inline-block;';
+                                                                                                                                    } else {
+                                                                                                                                        echo 'display: none;';
+                                                                                                                                    } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
+
             </div>
         </div>
         <?php if ($i == 3) {

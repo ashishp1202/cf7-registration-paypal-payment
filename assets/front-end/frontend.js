@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($) {
-
   // $ is now jQuery safely
   $(document).on("change", ".listing-plan-select", function () {
     $(".listing-plan-type").hide();
@@ -52,7 +51,7 @@ jQuery(document).ready(function ($) {
       data: {
         action: "delete_farm_listing",
         post_id: postId,
-        nonce: nonce
+        nonce: nonce,
       },
       dataType: "json",
       success: function (response) {
@@ -60,16 +59,90 @@ jQuery(document).ready(function ($) {
           $("#listing-" + postId).remove();
           renumberTable();
           // Show success message at the top
-          $("#message-container").html(
-            "<p class='success-message' style='color:green;'>Listing deleted successfully!</p>"
-          ).fadeIn().delay(2000).fadeOut();
+          $("#message-container")
+            .html(
+              "<p class='success-message' style='color:green;'>Listing deleted successfully!</p>"
+            )
+            .fadeIn()
+            .delay(2000)
+            .fadeOut();
         } else {
           alert("Error: " + response.message);
         }
       },
       error: function (xhr, status, error) {
         console.error("AJAX Error:", error);
-      }
+      },
+    });
+  });
+
+  $(".add-to-fav-trigger").click(function () {
+    postId = $(this).data("post-id");
+    if (!confirm("Are you sure you want to add to fav?")) {
+      return;
+    }
+    $.ajax({
+      type: "POST",
+      url: deleteListing.ajax_url,
+      data: {
+        action: "addtofav_farm_listing",
+        post_id: postId,
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          $("#listing-" + postId).remove();
+          renumberTable();
+          // Show success message at the top
+          $("#message-container")
+            .html(
+              "<p class='success-message' style='color:green;'>Listing deleted successfully!</p>"
+            )
+            .fadeIn()
+            .delay(2000)
+            .fadeOut();
+        } else {
+          alert("Error: " + response.message);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX Error:", error);
+      },
+    });
+  });
+  $(".remove-from-fav-trigger").click(function () {
+    postId = $(this).data("id");
+
+    if (!confirm("Are you sure you want to delete this listing?")) {
+      return;
+    }
+    $.ajax({
+      type: "POST",
+      url: deleteListing.ajax_url,
+      data: {
+        action: "removefromfav_farm_listing",
+        post_id: postId,
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          $("#listing-" + postId).remove();
+          renumberTable();
+          // Show success message at the top
+          $("#message-container")
+            .html(
+              "<p class='success-message' style='color:green;'>Listing deleted successfully!</p>"
+            )
+            .fadeIn()
+            .delay(2000)
+            .fadeOut();
+        } else {
+          alert("Error: " + response.message);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX Error:", error);
+      },
     });
   });
   document.addEventListener(
@@ -81,47 +154,52 @@ jQuery(document).ready(function ($) {
     },
     false
   );
-
-
-
 });
 
 // Function to renumber the Sr. No. column
 function renumberTable() {
   $("#listings-container tr").each(function (index) {
-    $(this).find("td.sr-no").text(index + 1); // Update serial number
+    $(this)
+      .find("td.sr-no")
+      .text(index + 1); // Update serial number
   });
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  document.querySelector('.next-step').addEventListener('click', function (e) {
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelector(".next-step").addEventListener("click", function (e) {
     e.preventDefault(); // Prevent anchor default behavior
 
     // Scope to the document or a parent container that actually wraps the fields
     let email = document.querySelector('input[name="email-seller"]').value;
-    let confirmEmail = document.querySelector('input[name="seller-retrype-email"]').value;
-    let errorSpan = document.querySelector('#email-error');
+    let confirmEmail = document.querySelector(
+      'input[name="seller-retrype-email"]'
+    ).value;
+    let errorSpan = document.querySelector("#email-error");
 
-    let password = document.querySelector('input[name="account-password"]').value;
-    let confirmPassword = document.querySelector('input[name="account-verify-password"]').value;
-    let passwordErrorSpan = document.querySelector('#password-error');
+    let password = document.querySelector(
+      'input[name="account-password"]'
+    ).value;
+    let confirmPassword = document.querySelector(
+      'input[name="account-verify-password"]'
+    ).value;
+    let passwordErrorSpan = document.querySelector("#password-error");
 
     let isValid = true;
 
     // Email validation
     if (email !== confirmEmail) {
-      errorSpan.style.display = 'block';
+      errorSpan.style.display = "block";
       isValid = false;
     } else {
-      errorSpan.style.display = 'none';
+      errorSpan.style.display = "none";
     }
 
     // Password validation
     if (password !== confirmPassword) {
-      passwordErrorSpan.style.display = 'block';
+      passwordErrorSpan.style.display = "block";
       isValid = false;
     } else {
-      passwordErrorSpan.style.display = 'none';
+      passwordErrorSpan.style.display = "none";
     }
 
     // Prevent moving forward if validation fails
@@ -129,23 +207,23 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    nextBtn = $('.next-step');
-    backBtn = $('.back-step');
-    step1 = $('#step-1');
-    step2 = $('#step-2');
+    nextBtn = $(".next-step");
+    backBtn = $(".back-step");
+    step1 = $("#step-1");
+    step2 = $("#step-2");
 
     // nextBtn.on('click', function () {
     //   step1.css('display', 'none');
     //   step2.css('display', 'block');
     // });
 
-    backBtn.on('click', function () {
-      step2.css('display', 'none');
-      step1.css('display', 'block');
+    backBtn.on("click", function () {
+      step2.css("display", "none");
+      step1.css("display", "block");
     });
 
     // If valid, go to next step
-    document.getElementById('step-1').style.display = 'none';
-    document.getElementById('step-2').style.display = 'block';
+    document.getElementById("step-1").style.display = "none";
+    document.getElementById("step-2").style.display = "block";
   });
 });
