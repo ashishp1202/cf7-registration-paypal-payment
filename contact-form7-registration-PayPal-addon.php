@@ -32,11 +32,7 @@ if ($cf7ra_paypal_mode === 'live') {
 define('PAYPAL_MODE', $cf7ra_paypal_mode); // Change to 'live' for production
 
 define('CF7RA_PATH', plugin_dir_path(__FILE__));
-<<<<<<< HEAD
 //ini_set('display_errors', 1);
-=======
-ini_set('display_errors', 1);
->>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
 require_once CF7RA_PATH . 'includes/admin-settings.php';
 require_once CF7RA_PATH . 'includes/form-handler.php';
 //require_once CF7RA_PATH . 'includes/paypal-api.php';
@@ -44,10 +40,7 @@ require_once CF7RA_PATH . 'includes/user-registration.php';
 require_once CF7RA_PATH . 'includes/cpt-handler.php';
 require_once CF7RA_PATH . 'includes/shortcodes.php';
 require_once CF7RA_PATH . 'includes/admin-metabox.php';
-<<<<<<< HEAD
 require_once CF7RA_PATH . 'includes/template-loader.php';
-=======
->>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
 
 function cf7ra_enqueue_scripts()
 {

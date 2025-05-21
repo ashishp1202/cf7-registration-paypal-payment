@@ -16,15 +16,9 @@ function cf7ra_get_paypal_token()
     );
 
     $response = wp_remote_post($url, $args);
-<<<<<<< HEAD
     /* echo "<pre>";
     print_r($response);
     exit(); */
-=======
-    echo "<pre>";
-    print_r($response);
-    exit();
->>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     if (is_wp_error($response)) {
         return false;
     }
@@ -65,9 +59,7 @@ function cf7ra_create_paypal_order($amount, $currency = 'USD', $return_url, $can
     );
 
     $response = wp_remote_post($url, $args);
-    echo "<pre>";
-    print_r($response);
-    exit();
+
     if (is_wp_error($response)) {
         return false;
     }
@@ -167,10 +159,10 @@ function cf7ra_extract_transaction_data($response)
         'payer_name'     => $response['payer']['name']['given_name'] . ' ' . $response['payer']['name']['surname'],
     ];
 }
-$products = get_paypal_products();
+/* $products = get_paypal_products();
 echo "<pre>";
 print_r($products);
-exit();
+exit(); */
 function get_paypal_products()
 {
     $access_token = cf7ra_get_paypal_token();

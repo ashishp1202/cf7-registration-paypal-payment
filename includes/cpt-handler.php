@@ -18,7 +18,7 @@ function cf7ra_register_cpt()
         'label' => 'Farm Listings',
         'public'             => true,
         'publicly_queryable' => true,
-        'supports' => array('title', 'editor', 'author'),
+        'supports' => array('title', 'editor', 'author', 'thumbnail'),
     ));
 }
 
