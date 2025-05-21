@@ -64,6 +64,7 @@ function cf7ra__show_from_data($post)
     $milk_facility = explode(',', $milk_facility);
     $feed_storage = get_post_meta($post->ID, 'cf7ra_field_mappings_feed_storage', true);
     $feed_storage = explode(',', $feed_storage);
+<<<<<<< HEAD
 
     $primary_phone_checkbox = get_post_meta($post->ID, 'cf7ra_field_mappings_primary_phone', true);
     $sec_phone_checkbox = get_post_meta($post->ID, 'cf7ra_field_mappings_sec_phone', true);
@@ -75,6 +76,14 @@ function cf7ra__show_from_data($post)
     $photo_url = get_post_meta($post->ID, 'cf7ra_field_mappings_photo_upload', true);
     $photo_description = get_post_meta($post->ID, 'cf7ra_field_mappings_photo_desc', true);
 
+=======
+    $primary_phone_checkbox = get_post_meta($post->ID, 'cf7ra_field_mappings_primary_phone', true);
+    $sec_phone_checkbox = get_post_meta($post->ID, 'cf7ra_field_mappings_sec_phone', true);
+    $same_property_checkbox = get_post_meta($post->ID, 'cf7ra_field_mappings_same_property', true);
+    $street_address_checkbox = get_post_meta($post->ID, 'cf7ra_field_mappings_street_address', true);
+    $lastname_checkbox = get_post_meta($post->ID, 'cf7ra_field_mappings_last_name', true);
+    $firstname_checkbox = get_post_meta($post->ID, 'cf7ra_field_mappings_first_name', true);
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
 
 
     echo '<table class="cf7pap-box-data form-table">' .
@@ -380,6 +389,10 @@ function cf7ra__show_from_data($post)
         '</th>' .
         '<td>
          <select id="cf7ra_field_mappings_address_state" name="cf7ra_field_mappings_address_state">
+<<<<<<< HEAD
+=======
+                                    <option value="--">Select a State/Province</option>
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
                                     <option value="Alabama" ' . selected($address_state, 'Alabama', false) . '>Alabama</option>
                                     <option value="Alaska" ' . selected($address_state, 'Alaska', false) . '>Alaska</option>
                                     <option value="Alberta" ' . selected($address_state, 'Alberta', false) . '>Alberta</option>
@@ -451,6 +464,10 @@ function cf7ra__show_from_data($post)
         '</th>' .
         '<td>
         <select id="cf7ra_field_mappings_add_country" name="cf7ra_field_mappings_address_country">
+<<<<<<< HEAD
+=======
+                                     <option value="--" ' . selected($address_country, "--", false) . '>Select a Country</option>
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     <option value="United States" ' . selected($address_country, "United States", false) . '>United States</option>
     <option value="Afghanistan" ' . selected($address_country, "Afghanistan", false) . '>Afghanistan</option>
     <option value="Aland Islands" ' . selected($address_country, "Aland Islands", false) . '>Aland Islands</option>
@@ -723,19 +740,29 @@ function cf7ra__show_from_data($post)
         '<td>    <input type="text" id="cf7ra_field_mappings_first_name" name="cf7ra_field_mappings_custom_first_name" value="' . esc_attr($first_name) . '" style="width:100%;" /></td>' .
         '</tr>';
 
+<<<<<<< HEAD
     $checkbox_fnvalue = "Display Contact's First Name";
     $fnchecked = ($firstname_checkbox === $checkbox_fnvalue) ? 'checked' : '';
 
+=======
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     echo '<tr class="form-field">' .
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Display Contacts First Name', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
+<<<<<<< HEAD
         '<td> <input id="displayFirstName" type="checkbox" name="cf7ra_field_mappings_first_name[]" value="' . $checkbox_fnvalue . '" ' . $fnchecked . '    />
            <label for="displayFirstName">Display Contacts First Name</label></td>' .
         '</tr>';
 
     $checkbox_lnvalue = "Display Contact's Last Name";
     $lnchecked = ($lastname_checkbox === $checkbox_lnvalue) ? 'checked' : '';
+=======
+        '<td> <input id="displayFirstName" type="checkbox" name="cf7ra_field_mappings_first_name" value="Display Contacts First Name" ' .  checked($firstname_checkbox, 'Display Contacts First Name') . '  />
+           <label for="displayFirstName">Display Contacts First Name</label></td>' .
+        '</tr>';
+
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
 
     echo '<tr class="form-field">' .
         '<th scope="row">' .
@@ -744,12 +771,19 @@ function cf7ra__show_from_data($post)
         '<td>    <input type="text" id="cf7ra_field_mappings_last_name" name="cf7ra_field_mappings_custom_last_name" value="' . esc_attr($last_name) . '" style="width:100%;" /></td>' .
         '</tr>';
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     echo '<tr class="form-field">' .
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Display Contacts Last Name', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
+<<<<<<< HEAD
         '<td> <input id="displaylastName" type="checkbox" name="cf7ra_field_mappings_last_name[]" value="' . $checkbox_lnvalue . '" ' . $lnchecked . '    />
+=======
+        '<td> <input id="displaylastName" type="checkbox" name="cf7ra_field_mappings_last_name" value="Display Contacts Last Name" ' .  checked($lastname_checkbox, 'Display Contacts Last Name') . '  />
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
            <label for="displaylastName">Display Contacts Last Name</label></td>' .
         '</tr>';
 
@@ -761,13 +795,17 @@ function cf7ra__show_from_data($post)
         '<td>    <input type="text" id="cf7ra_field_mappings_seller_street_add" name="cf7ra_field_mappings_custom_seller_street_address" value="' . esc_attr($seller_street_address) . '" style="width:100%;" /></td>' .
         '</tr>';
 
+<<<<<<< HEAD
     $checkbox_samevalue = "Same as property";
     $samechecked = ($same_property_checkbox === $checkbox_samevalue) ? 'checked' : '';
 
+=======
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     echo '<tr class="form-field">' .
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Same as property', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
+<<<<<<< HEAD
         '<td> <input id="cf7ra_field_mappings_same_property" type="checkbox" name="cf7ra_field_mappings_same_property[]" value="' . $checkbox_samevalue . '" ' . $samechecked . '    />
            <label for="same_property">Same as property</label></td>' .
         '</tr>';
@@ -775,11 +813,21 @@ function cf7ra__show_from_data($post)
     $checkbox_addvalue = "Display Contact's Full Address";
     $addchecked = ($street_address_checkbox === $checkbox_addvalue) ? 'checked' : '';
 
+=======
+        '<td> <input id="cf7ra_field_mappings_same_property" type="checkbox" name="cf7ra_field_mappings_same_property" value="Same as property" ' .  checked($same_property_checkbox, 'Same as property') . '  />
+           <label for="same_property">Same as property</label></td>' .
+        '</tr>';
+
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     echo '<tr class="form-field">' .
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Display Contacts Full Address', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
+<<<<<<< HEAD
         '<td> <input id="cf7ra_field_mappings_display_street_address" type="checkbox" name="cf7ra_field_mappings_display_street_address[]" value="' . $checkbox_addvalue . '"  ' . $addchecked . '   />
+=======
+        '<td> <input id="cf7ra_field_mappings_street_address" type="checkbox" name="cf7ra_field_mappings_street_address" value="Display Contacts Full Address" ' .  checked($street_address_checkbox, 'Display Contacts Full Address') . '  />
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
            <label for="displaylastName">Display Contacts Full Address</label></td>' .
         '</tr>';
 
@@ -810,6 +858,10 @@ function cf7ra__show_from_data($post)
         '</th>' .
         '<td>
          <select id="cf7ra_field_mappings_custom_seller_state" name="cf7ra_field_mappings_custom_seller_state">
+<<<<<<< HEAD
+=======
+                                    <option value="--">Select a State/Province</option>
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
                                     <option value="Alabama" ' . selected($seller_state, 'Alabama', false) . '>Alabama</option>
                                     <option value="Alaska" ' . selected($seller_state, 'Alaska', false) . '>Alaska</option>
                                     <option value="Alberta" ' . selected($seller_state, 'Alberta', false) . '>Alberta</option>
@@ -883,14 +935,21 @@ function cf7ra__show_from_data($post)
         '<td>    <input type="text" id="cf7ra_field_mappings_seller_pri_phone" name="cf7ra_field_mappings_custom_seller_primary_phone" value="' . esc_attr($seller_primary_phone) . '" style="width:100%;" /></td>' .
         '</tr>';
 
+<<<<<<< HEAD
     $checkbox_priphonevalue = "Display Primary Phone";
     $priphonechecked = ($primary_phone_checkbox === $checkbox_priphonevalue) ? 'checked' : '';
 
+=======
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     echo '<tr class="form-field">' .
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Display Primary Phone', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
+<<<<<<< HEAD
         '<td> <input id="cf7ra_field_mappings_primary_phone" type="checkbox" name="cf7ra_field_mappings_primary_phone[]" value="' . $checkbox_priphonevalue . '" ' . $priphonechecked . '  />
+=======
+        '<td> <input id="cf7ra_field_mappings_primary_phone" type="checkbox" name="cf7ra_field_mappings_primary_phone" value="Display Primary Phone" ' .  checked($primary_phone_checkbox, 'Display Primary Phone') . '  />
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
            <label for="displaylastName">Display Primary Phone</label></td>' .
         '</tr>';
 
@@ -898,6 +957,7 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Seller Secondary Phone', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
+<<<<<<< HEAD
         '<td>    <input type="text" id="cf7ra_field_mappings_seller_sec_phone name="cf7ra_field_mappings_custom_seller_sec_phone" value="' . esc_attr($seller_sec_phone) . '" style="width:100%;" /></td>' .
         '</tr>';
 
@@ -905,11 +965,20 @@ function cf7ra__show_from_data($post)
     $secphonechecked = ($sec_phone_checkbox === $checkbox_secphonevalue) ? 'checked' : '';
 
 
+=======
+        '<td>    <input type="text" id="cf7ra_field_mappings_seller_sec_phone" name="cf7ra_field_mappings_custom_seller_sec_phone" value="' . esc_attr($seller_sec_phone) . '" style="width:100%;" /></td>' .
+        '</tr>';
+
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     echo '<tr class="form-field">' .
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Display Alternate Phone', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
+<<<<<<< HEAD
         '<td> <input id="cf7ra_field_mappings_sec_phone" type="checkbox" name="cf7ra_field_mappings_sec_phone[]" value="' . $checkbox_secphonevalue . '" ' . $secphonechecked . '   />
+=======
+        '<td> <input id="cf7ra_field_mappings_sec_phone" type="checkbox" name="cf7ra_field_mappings_sec_phone" value="Display Alternate Phone" ' .  checked($sec_phone_checkbox, 'Display Alternate Phone') . '  />
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
            <label for="displaylastName">Display Alternate Phone</label></td>' .
         '</tr>';
 
@@ -978,6 +1047,7 @@ function cf7ra__show_from_data($post)
         '</th>' .
         '<td>    <input type="text" id="cf7ra_field_acc_verify_pass" name="cf7ra_field_mappings_custom_account_verify_password" value="' . esc_attr($account_verify_password) . '" style="width:100%;" /></td>' .
         '</tr>';
+<<<<<<< HEAD
     if (!empty($photo_url) && is_array($photo_url)) {
         echo '<tr class="form-field">' .
             '<th scope="row">' .
@@ -1008,6 +1078,8 @@ function cf7ra__show_from_data($post)
         '</th>' .
         '<td>    <input type="textarea" id="cf7ra_field_photo_description" name="cf7ra_field_mappings_photo_desc" value="' . esc_attr($photo_description) . '" style="width:100%;" /></td>' .
         '</tr>';
+=======
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
 
     echo '</table>';
 }
@@ -1016,6 +1088,10 @@ add_action('save_post', 'cf7ra_save_custom_meta_box_data');
 
 function cf7ra_save_custom_meta_box_data($post_id)
 {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     // Check if this is an autosave
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
@@ -1028,6 +1104,16 @@ function cf7ra_save_custom_meta_box_data($post_id)
         }
     }
 
+<<<<<<< HEAD
+=======
+    // Sanitize and save
+    // if (isset($_POST['my_custom_field'])) {
+    //     $sanitized = sanitize_text_field($_POST['my_custom_field']);
+    //     update_post_meta($post_id, '_my_custom_field', $sanitized);
+    // }
+
+
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     // Save each field manually without using a loop
     if (isset($_POST['cf7ra_field_mappings_form_id'])) {
         update_post_meta($post_id, 'cf7ra_field_mappings_form_id', sanitize_text_field($_POST['cf7ra_field_mappings_form_id']));
@@ -1234,6 +1320,7 @@ function cf7ra_save_custom_meta_box_data($post_id)
         update_post_meta($post_id, 'cf7ra_field_mappings_manure_storage', sanitize_text_field($_POST['cf7ra_field_mappings_manure_storage']));
     }
 
+<<<<<<< HEAD
     if (isset($_POST['cf7ra_field_mappings_primary_phone']) && !empty($_POST['cf7ra_field_mappings_primary_phone'])) {
         // If the checkbox is checked, save the value to post meta
         update_post_meta($post_id, 'cf7ra_field_mappings_primary_phone', "Display Primary Phone");
@@ -1332,6 +1419,25 @@ function cf7ra_save_custom_meta_box_data($post_id)
         if (!empty($file_urls)) {
             update_post_meta($post_id, 'cf7ra_field_mappings_photo_upload', $file_urls);
         }
+=======
+    if (isset($_POST['cf7ra_field_mappings_primary_phone'])) {
+        update_post_meta($post_id, 'cf7ra_field_mappings_primary_phone', sanitize_text_field($_POST['cf7ra_field_mappings_primary_phone']));
+    }
+    if (isset($_POST['cf7ra_field_mappings_sec_phone'])) {
+        update_post_meta($post_id, 'cf7ra_field_mappings_sec_phone', sanitize_text_field($_POST['cf7ra_field_mappings_sec_phone']));
+    }
+    if (isset($_POST['cf7ra_field_mappings_same_property'])) {
+        update_post_meta($post_id, 'cf7ra_field_mappings_same_property', sanitize_text_field($_POST['cf7ra_field_mappings_same_property']));
+    }
+    if (isset($_POST['cf7ra_field_mappings_street_address'])) {
+        update_post_meta($post_id, 'cf7ra_field_mappings_street_address', sanitize_text_field($_POST['cf7ra_field_mappings_street_address']));
+    }
+    if (isset($_POST['cf7ra_field_mappings_last_name'])) {
+        update_post_meta($post_id, 'cf7ra_field_mappings_last_name', sanitize_text_field($_POST['cf7ra_field_mappings_last_name']));
+    }
+    if (isset($_POST['cf7ra_field_mappings_first_name'])) {
+        update_post_meta($post_id, 'cf7ra_field_mappings_first_name', sanitize_text_field($_POST['cf7ra_field_mappings_first_name']));
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     }
 }
 
@@ -1360,9 +1466,12 @@ function delete_farm_listing()
     }
 }
 add_action('wp_ajax_delete_farm_listing', 'delete_farm_listing');
+<<<<<<< HEAD
 
 function add_multipart_form_data_to_post_edit()
 {
     echo ' enctype="multipart/form-data"';
 }
 add_action('post_edit_form_tag', 'add_multipart_form_data_to_post_edit');
+=======
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af

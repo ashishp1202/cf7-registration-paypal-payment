@@ -1,9 +1,13 @@
 <?php
 //add_action('wpcf7_mail_sent', 'cf7ra_handle_form_submission');
 
+<<<<<<< HEAD
 add_action('wpcf7_submit', 'cf7ra_handle_form_submission');
+=======
+add_action('wpcf7_submit', 'cf7ra_handle_form_submission', 10, 2);
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
 
-function cf7ra_handle_form_submission($contact_form)
+function cf7ra_handle_form_submission($contact_form, $result)
 {
     $form_id = get_option('cf7ra_form_id');
 
@@ -12,8 +16,11 @@ function cf7ra_handle_form_submission($contact_form)
     }
 
     $submission = WPCF7_Submission::get_instance();
+<<<<<<< HEAD
     $uploaded_files = $submission->uploaded_files();
     $uploaded_urls = [];
+=======
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
 
     if (!$submission) {
         return;
@@ -27,7 +34,11 @@ function cf7ra_handle_form_submission($contact_form)
     $cpt_title = sanitize_text_field($data[$field_mappings['cpt_title']] ?? '');
     $firstname = sanitize_text_field($data[$field_mappings['firstname']] ?? '');
     $lastname = sanitize_text_field($data[$field_mappings['lastname']] ?? '');
+<<<<<<< HEAD
     //  $plan = sanitize_text_field($data['payment_plan'] ?? 'monthly');
+=======
+    $plan = sanitize_text_field($data['payment_plan'] ?? 'one_time');
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
 
     // Store user details in session
     session_start();
@@ -38,7 +49,17 @@ function cf7ra_handle_form_submission($contact_form)
     $return_url = site_url('/payment-success');
     $cancel_url = site_url('/payment-cancel');
 
+<<<<<<< HEAD
 
+=======
+    /* if ($plan == 'one_time') {
+        $order = cf7ra_create_paypal_order(50, 'USD', $return_url, $cancel_url);
+    } elseif ($plan == 'monthly') {
+        $order = cf7ra_create_paypal_subscription_plan(10, 'MONTH', 'USD');
+    } else {
+        $order = cf7ra_create_paypal_subscription_plan(50, '6months', 'USD');
+    } */
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
     // Register User
     $user_email = sanitize_email($_SESSION['cf7ra_email']); // Retrieve from session
     $user_password = sanitize_text_field($_SESSION['cf7ra_password']);
@@ -48,6 +69,7 @@ function cf7ra_handle_form_submission($contact_form)
         $user_id = cf7ra_register_user($user_email, $user_password);
         update_user_meta($user_id, "first_name",  $firstname);
         update_user_meta($user_id, "last_name",  $lastname);
+<<<<<<< HEAD
     }
     $farmPostID = cf7ra_create_cpt($user_id, $cpt_title);
     add_post_meta($farmPostID, 'cf7ra_field_mappings_listing_plan', $data['listing-plan'][0], true);
@@ -227,6 +249,83 @@ function cf7ra_handle_form_submission($contact_form)
     //         return;
     //     }
     // }
+=======
+    }
+
+    $farmPostID = cf7ra_create_cpt($user_id, $cpt_title);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_listing_plan', $data['listing-plan'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_asking_price', $data['asking-price'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_asking_price_rent_lease', $data['asking-price-rent-lease'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_land_unit_type', $data['land-unit-type'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_total_acres', $data['total-acres'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_total_hectare', $data['total-hectare'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_land_description', $data['land-description'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_current_taxes', $data['current-taxes'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_numbers_of_buildings', $data['numbers-of-buildings'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_farm_capacity', $data['farm-capacity'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_capacity_type', $data['capacity-type'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_house_info', $data['house-info'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_num_of_bedrooms', $data['num-of-bedrooms'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_num_of_bathrooms', $data['num-of-bathrooms'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_sq_foot', $data['sq-foot'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_year_built', $data['year-built'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_description_buyers_read', $data['description-buyers-read'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_company_url', $data['company-url'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_virtual_tour_url', $data['virtual-tour-url'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_flyer_pdf_url', $data['flyer-pdf-url'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_street_address', $data['street-address'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_street_address_1', $data['street-address-1'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_address_sip', $data['address-sip'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_address_city', $data['address-city'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_address_state', $data['address-state'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_address_country', $data['address-country'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_address_display', $data['address-display'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_general_location', $data['general-location'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_listing_number', $data['custom-listing-number'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_first_name', $data['first-name'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_last_name', $data['last-name'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_seller_street_address', $data['seller-street-address'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_seller_street_address1', $data['seller-street-address1'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_seller_zip', $data['seller-zip'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_seller_city', $data['seller-city'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_seller_state', $data['seller-state'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_seller_primary_phone', $data['seller-primary-phone'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_seller_sec_phone', $data['seller-sec-phone'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_seller_company_url', $data['seller-company-url'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_seller_calling_time', $data['seller-calling-time'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_email_seller', $data['email-seller'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_seller_retrype_email', $data['seller-retrype-email'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_seller_is_realtor', $data['seller-is-realtor'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_account_password', $data['account-password'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_account_verify_password', $data['account-verify-password'], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_listing_sale_type', $data['listing-sale-type'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_custom_irrigated', $data['irrigated'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_type_of_housing', $data['type-of-housing'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_listing_number_type', $data['listing-number-type'][0], true);
+
+    $housing_name = isset($data['housing_name']) ? implode(',', $data['housing_name']) : '';
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_housing_name', $housing_name, true);
+
+    $milk_facility = isset($data['milk_facility']) ? implode(',', $data['milk_facility']) : '';
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_milk_facility', $milk_facility, true);
+
+    $feed_storage  = isset($data['feed_storage']) ? implode(',', $data['feed_storage']) : '';
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_feed_storage', $feed_storage, true);
+
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_manure_storage', $data['manure_storage'][0], true);
+
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_primary_phone', $data['displayPrimaryPhone'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_sec_phone', $data['displayAlternatePhone'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_same_property', $data['sameProperty'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_street_address', $data['displaystreetAddress'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_last_name', $data['displayFirstName'][0], true);
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_first_name', $data['displaylastName'][0], true);
+
+    /* if ($order && isset($order['links'][1]['href'])) {
+        wp_redirect($order['links'][1]['href']); // Redirect user to PayPal
+        exit;
+    } */
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
 }
 add_filter('wpcf7_ajax_json_echo', 'cf7ra_custom_json_redirect', 10, 2);
 

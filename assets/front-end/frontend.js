@@ -1,5 +1,8 @@
 jQuery(document).ready(function ($) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
   // $ is now jQuery safely
   $(document).on("change", ".listing-plan-select", function () {
     $(".listing-plan-type").hide();
@@ -52,23 +55,31 @@ jQuery(document).ready(function ($) {
       data: {
         action: "delete_farm_listing",
         post_id: postId,
+<<<<<<< HEAD
         nonce: nonce
+=======
+        nonce: nonce,
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
       },
       dataType: "json",
       success: function (response) {
         if (response.success) {
           $("#listing-" + postId).remove();
+<<<<<<< HEAD
           renumberTable();
           // Show success message at the top
           $("#message-container").html(
             "<p class='success-message' style='color:green;'>Listing deleted successfully!</p>"
           ).fadeIn().delay(2000).fadeOut();
+=======
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
         } else {
           alert("Error: " + response.message);
         }
       },
       error: function (xhr, status, error) {
         console.error("AJAX Error:", error);
+<<<<<<< HEAD
       }
     });
   });
@@ -148,4 +159,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('step-1').style.display = 'none';
     document.getElementById('step-2').style.display = 'block';
   });
+=======
+      },
+    });
+  });
+>>>>>>> 38cf6f7ad936556b5fa3ed8d68d840159721d7af
 });
