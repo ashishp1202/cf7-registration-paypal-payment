@@ -60,6 +60,18 @@ function cf7ra_enqueue_frontend_assets()
         wp_enqueue_style('cf7ra-frontend-style', plugin_dir_url(__FILE__) . 'assets/front-end/frontend.css');
         wp_enqueue_script('cf7ra-frontend-script', plugin_dir_url(__FILE__) . 'assets/front-end/frontend.js', array('jquery'), null, true);
 
+        if (is_singular('farm_listing')) {
+            wp_enqueue_style('cf7ra-common-style', plugin_dir_url(__FILE__) . '/assets/front-end/farm-single/css/common.css');
+            wp_enqueue_style('cf7ra-responsive-style', plugin_dir_url(__FILE__) . '/assets/front-end/farm-single/css/responsive.css');
+            wp_enqueue_style('cf7ra-slick-theme-style', plugin_dir_url(__FILE__) . '/assets/front-end/farm-single/css/slick-theme.css');
+            wp_enqueue_style('cf7ra-slick-style', plugin_dir_url(__FILE__) . '/assets/front-end/farm-single/css/slick.css');
+            wp_enqueue_style('cf7ra-singlestyle-style', plugin_dir_url(__FILE__) . '/assets/front-end/farm-single/css/style.css');
+            wp_enqueue_style('cf7ra-utilities-style', plugin_dir_url(__FILE__) . '/assets/front-end/farm-single/css/utilities.css');
+            wp_enqueue_script('cf7ra-slickmin-script', plugin_dir_url(__FILE__) . '/assets/front-end/farm-single/js/slick.min.js', array('jquery'), null, true);
+            wp_enqueue_script('cf7ra-frontendscr-script', plugin_dir_url(__FILE__) . '/assets/front-end/farm-single/js/script.js', array('jquery'), null, true);
+        }
+
+
         wp_localize_script('cf7ra-frontend-script', 'deleteListing', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce'    => wp_create_nonce('delete_listing_nonce')

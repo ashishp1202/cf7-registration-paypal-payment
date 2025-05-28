@@ -4,7 +4,7 @@ add_shortcode('cf7ra_user_listings', 'cf7ra_display_user_listings');
 function cf7ra_display_user_listings()
 {
     if (!is_user_logged_in()) {
-        return '<p>You must be logged in to view your listings.</p>';
+        return '<p>You must be login in to view your listings. <a href="' . esc_url(wp_login_url(get_permalink())) . '">Click here to login.</a></p>';
     }
 
     $user_id = get_current_user_id();
@@ -63,18 +63,20 @@ function cf7ra_display_user_listings()
 
 add_shortcode('cf7ra_listings', 'cf7ra_display_listings');
 
-function cf7ra_display_listings()
+function cf7ra_display_listings($atts)
 {
-    if (!is_user_logged_in()) {
-        return '<p>You must be logged in to view your listings.</p>';
-    }
+    /* if (!is_user_logged_in()) {
+        return '<p>You must be login in to view your listings. <a href="' . esc_url(wp_login_url(get_permalink())) . '">Click here to login.</a></p>';
+    } */
 
-
+    $atts = shortcode_atts(array(
+        'posts_per_page' => 6, // default value
+    ), $atts, 'custom_posts');
 
     $args = array(
         'post_type'      => 'farm_listing',
         'post_status'   => 'published',
-        'posts_per_page' => 6,
+        'posts_per_page' => $atts['posts_per_page'],
     );
 
     $listings = new WP_Query($args);
@@ -91,10 +93,21 @@ function cf7ra_display_listings()
     $i = 1;
     while ($listings->have_posts()) : $listings->the_post();
         $post_id = get_the_ID();
-        $listing_plan = get_post_meta($post_id, 'cf7ra_field_mappings_listing_plan', true);
-        $total_acres = get_post_meta($post_id, 'cf7ra_field_mappings_total_acres',  true);
+
         $farm_capacity = get_post_meta($post_id, 'cf7ra_field_mappings_farm_capacity', true);
         $asking_price = get_post_meta($post_id, 'cf7ra_field_mappings_asking_price', true);
+        $street_address = get_post_meta($post_id, 'cf7ra_field_mappings_street_address', true);
+        $address_city = get_post_meta($post_id, 'cf7ra_field_mappings_address_city', true);
+        $address_state = get_post_meta($post_id, 'cf7ra_field_mappings_address_state', true);
+        $address_sip = get_post_meta($post_id, 'cf7ra_field_mappings_address_sip', true);
+        $land_unit_type = get_post_meta($post_id, 'cf7ra_field_mappings_land_unit_type', true);
+        if ($land_unit_type === 'Acre') {
+            $land_unit = get_post_meta($post_id, 'cf7ra_field_mappings_total_acres', true);
+        } else {
+            $land_unit = get_post_meta($post_id, 'cf7ra_field_mappings_total_hectare', true);
+        }
+
+
 
         $nonce = wp_create_nonce('delete_listing_' . $post_id);
         $user_id = get_current_user_id();
@@ -106,26 +119,26 @@ function cf7ra_display_listings()
     ?>
 
         <div class="et_pb_column et_pb_column_1_3 et_pb_column_9 et_pb_css_mix_blend_mode_passthrough padding-up-btm-30 <?php if ($i == 3) { ?>  et-last-child <?php } ?>">
-            <div class="et_pb_module et_pb_image et_pb_image_0 et_pb_has_overlay">
-                <a href="<?php echo get_permalink($post_id); ?>"><span class="et_pb_image_wrap"><img src="<?php echo get_the_post_thumbnail_url($post_id, 'medium'); ?>" /></span></a>
+            <div class="et_pb_module et_pb_image et_pb_image_0 et_pb_has_overlay farm-listing-image-shortcode">
+                <a href="<?php echo get_permalink($post_id); ?>"><span class="et_pb_image_wrap"><img src="<?php echo get_the_post_thumbnail_url($post_id, 'large'); ?>" style="max-width: 330px;max-height: 250px;min-height: 250px;" /></span></a>
             </div>
-            <div class="et_pb_module et_pb_heading et_pb_heading_4 et_pb_bg_layout_">
-                <div class="et_pb_heading_container">
-                    <h5 class="et_pb_module_heading">$<?php echo $asking_price; ?></h5>
-                </div>
-            </div>
-            <div class="et_pb_module et_pb_heading et_pb_heading_5 et_pb_bg_layout_">
-                <div class="et_pb_heading_container">
-                    <h6 class="et_pb_module_heading">4 Beds, 3 Baths, 2240 Sqft</h6>
-                </div>
-            </div>
-            <div class="et_pb_module et_pb_text et_pb_text_7 et_pb_text_align_left et_pb_bg_layout_light">
+
+
+            <h4 class="et_pb_module_heading"><?php echo get_the_title($post_id); ?></h4>
+
+
+            <h5 class="et_pb_module_heading">Asking Price: $<?php echo $asking_price; ?></h5>
+
+
+            <h6 class="et_pb_module_heading">Land Area: <?php echo $land_unit . " " . $land_unit_type; ?></h6>
+
+            <div class="et_pb_module et_pb_text">
                 <div class="et_pb_text_inner">
-                    <p><span><?php echo $farm_capacity, ' Cows'; ?></span></p>
+                    <p><span>Capacity: <?php echo $farm_capacity, ' Cows'; ?></span></p>
                 </div>
             </div>
             <div class="et_pb_button_module_wrapper et_pb_button_0_wrapper et_pb_module">
-                <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light" href="">Contact Agent</a>
+                <!-- <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light" href="<?php echo get_permalink($post_id); ?>">Contact Agent</a> -->
 
                 <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites add-to-fav-trigger" style="<?php if (!$is_favorite) {
                                                                                                                                 echo 'display: inline-block;';
@@ -160,68 +173,83 @@ add_shortcode('cf7ra_myfav_listings', 'cf7ra_myfav_display_listings');
 function cf7ra_myfav_display_listings()
 {
     if (!is_user_logged_in()) {
-        return '<p>You must be logged in to view your listings.</p>';
+        return '<p>You must be login in to view your listings. <a href="' . esc_url(wp_login_url(get_permalink())) . '">Click here to login.</a></p>';
     }
 
 
-
+    ob_start();
     $user_id = get_current_user_id();
     if ($user_id) {
         $favorites = get_user_meta($user_id, 'favorite_posts', true);
         $i = 1;
-        foreach ($favorites as $key => $favorite) {
-            $post_id = $favorite;
-            $listing_plan = get_post_meta($post_id, 'cf7ra_field_mappings_listing_plan', true);
-            $total_acres = get_post_meta($post_id, 'cf7ra_field_mappings_total_acres',  true);
-            $farm_capacity = get_post_meta($post_id, 'cf7ra_field_mappings_farm_capacity', true);
-            $asking_price = get_post_meta($post_id, 'cf7ra_field_mappings_asking_price', true);
+        if (!empty($favorites)) {
+            foreach ($favorites as $key => $favorite) {
+                $post_id = $favorite;
+                $farm_capacity = get_post_meta($post_id, 'cf7ra_field_mappings_farm_capacity', true);
+                $asking_price = get_post_meta($post_id, 'cf7ra_field_mappings_asking_price', true);
+                $street_address = get_post_meta($post_id, 'cf7ra_field_mappings_street_address', true);
+                $address_city = get_post_meta($post_id, 'cf7ra_field_mappings_address_city', true);
+                $address_state = get_post_meta($post_id, 'cf7ra_field_mappings_address_state', true);
+                $address_sip = get_post_meta($post_id, 'cf7ra_field_mappings_address_sip', true);
+                $land_unit_type = get_post_meta($post_id, 'cf7ra_field_mappings_land_unit_type', true);
+                if ($land_unit_type === 'Acre') {
+                    $land_unit = get_post_meta($post_id, 'cf7ra_field_mappings_total_acres', true);
+                } else {
+                    $land_unit = get_post_meta($post_id, 'cf7ra_field_mappings_total_hectare', true);
+                }
+                $is_favorite = true;
         ?>
-            <div class="et_pb_column et_pb_column_1_3 et_pb_column_9 et_pb_css_mix_blend_mode_passthrough padding-up-btm-30 <?php if ($i == 3) { ?>  et-last-child <?php } ?>">
-                <div class="et_pb_module et_pb_image et_pb_image_0 et_pb_has_overlay">
-                    <a href="<?php echo get_permalink($post_id); ?>"><span class="et_pb_image_wrap"><img src="<?php echo get_the_post_thumbnail_url($post_id, 'medium'); ?>" /></span></a>
-                </div>
-                <div class="et_pb_module et_pb_heading et_pb_heading_4 et_pb_bg_layout_">
-                    <div class="et_pb_heading_container">
-                        <h5 class="et_pb_module_heading">$<?php echo $asking_price; ?></h5>
+                <div class="et_pb_column et_pb_column_1_3 et_pb_column_9 et_pb_css_mix_blend_mode_passthrough padding-up-btm-30 <?php if ($i == 3) { ?>  et-last-child <?php } ?>">
+                    <div class="et_pb_module et_pb_image et_pb_image_0 et_pb_has_overlay">
+                        <a href="<?php echo get_permalink($post_id); ?>"><span class="et_pb_image_wrap"><img src="<?php echo get_the_post_thumbnail_url($post_id, 'large'); ?>" style="max-width: 330px;max-height: 250px;min-height: 250px;" /></span></a>
+                    </div>
+
+
+                    <h4 class="et_pb_module_heading"><?php echo get_the_title($post_id); ?></h4>
+
+
+                    <h5 class="et_pb_module_heading">Asking Price: $<?php echo $asking_price; ?></h5>
+
+
+                    <h6 class="et_pb_module_heading">Land Area: <?php echo $land_unit . " " . $land_unit_type; ?></h6>
+
+                    <div class="et_pb_module et_pb_text">
+                        <div class="et_pb_text_inner">
+                            <p><span>Capacity: <?php echo $farm_capacity, ' Cows'; ?></span></p>
+                        </div>
+                    </div>
+                    <div class="et_pb_button_module_wrapper et_pb_button_0_wrapper et_pb_module" style="display: flex;">
+                        <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light my-fav-listing-btn" style="color: #ffffff !important;background-color: #000000 !important;" href="<?php echo get_the_permalink($post_id); ?>">Contact Agent</a>
+
+                        <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites add-to-fav-trigger my-fav-listing-btn" style="color: #ffffff !important;
+    background-color: #000000 !important; <?php if (!$is_favorite) {
+                                                echo 'display: inline-block;';
+                                            } else {
+                                                echo 'display: none;';
+                                            } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
+
+                        <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites remove-from-fav-trigger my-fav-listing-btn" style="color: #ffffff !important;
+    background-color: #000000 !important;<?php if ($is_favorite) {
+                                                echo 'display: inline-block;';
+                                            } else {
+                                                echo 'display: none;';
+                                            } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
+
                     </div>
                 </div>
-                <div class="et_pb_module et_pb_heading et_pb_heading_5 et_pb_bg_layout_">
-                    <div class="et_pb_heading_container">
-                        <h6 class="et_pb_module_heading">4 Beds, 3 Baths, 2240 Sqft</h6>
-                    </div>
-                </div>
-                <div class="et_pb_module et_pb_text et_pb_text_7 et_pb_text_align_left et_pb_bg_layout_light">
-                    <div class="et_pb_text_inner">
-                        <p><span><?php echo $farm_capacity, ' Cows'; ?></span></p>
-                    </div>
-                </div>
-                <div class="et_pb_button_module_wrapper et_pb_button_0_wrapper et_pb_module">
-                    <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light" href="">Contact Agent</a>
-
-                    <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites add-to-fav-trigger" style="<?php if (!$is_favorite) {
-                                                                                                                                    echo 'display: inline-block;';
-                                                                                                                                } else {
-                                                                                                                                    echo 'display: none;';
-                                                                                                                                } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
-
-                    <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites remove-from-fav-trigger" style="<?php if ($is_favorite) {
-                                                                                                                                            echo 'display: inline-block;';
-                                                                                                                                        } else {
-                                                                                                                                            echo 'display: none;';
-                                                                                                                                        } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
-
-                </div>
-            </div>
         <?php if ($i == 3) {
-                $i == 0;
+                    $i == 0;
+                }
+                $i++;
             }
-            $i++;
+        } else {
+            echo "No favorites added";
         }
     } else {
-        echo "Please login to review.";
+        echo "Please login to review. <a href=" . esc_url(wp_login_url(get_permalink())) . ">Click here to login.</a>";
     }
 
-    ob_start();
+
     //echo '<div class="et_pb_row et_pb_row_5 et_pb_gutters2">';
 
 
@@ -234,7 +262,7 @@ add_shortcode('cf7ra_edit_listings', 'cf7ra_edit_user_listings');
 function cf7ra_edit_user_listings()
 {
     if (!is_user_logged_in()) {
-        return '<p>You must be logged in to edit your listings.</p>';
+        return '<p>You must be login in to edit your listings. <a href="' . esc_url(wp_login_url(get_permalink())) . '">Click here to login.</a></p>';
     }
 
     $user_id = get_current_user_id();

@@ -78,6 +78,7 @@ jQuery(document).ready(function ($) {
 
   $(".add-to-fav-trigger").click(function () {
     postId = $(this).data("post-id");
+    var parentObj = $(this).closest("div");
     if (!confirm("Are you sure you want to add to fav?")) {
       return;
     }
@@ -91,7 +92,7 @@ jQuery(document).ready(function ($) {
       dataType: "json",
       success: function (response) {
         if (response.success) {
-          $(".add-remove-favorites").toggle();
+          parentObj.find(".add-remove-favorites").toggle();
         } else {
           alert("Error: " + response.message);
         }
@@ -103,7 +104,7 @@ jQuery(document).ready(function ($) {
   });
   $(".remove-from-fav-trigger").click(function () {
     postId = $(this).data("post-id");
-
+    var parentObj = $(this).closest("div");
     if (!confirm("Are you sure you want to delete this listing?")) {
       return;
     }
@@ -117,7 +118,7 @@ jQuery(document).ready(function ($) {
       dataType: "json",
       success: function (response) {
         if (response.success) {
-          $(".add-remove-favorites").toggle();
+          parentObj.find(".add-remove-favorites").toggle();
         } else {
           alert("Error: " + response.message);
         }
