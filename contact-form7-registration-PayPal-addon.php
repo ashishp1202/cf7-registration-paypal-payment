@@ -60,7 +60,7 @@ function cf7ra_enqueue_frontend_assets()
         wp_enqueue_style('cf7ra-frontend-style', plugin_dir_url(__FILE__) . 'assets/front-end/frontend.css');
         wp_enqueue_script('cf7ra-frontend-script', plugin_dir_url(__FILE__) . 'assets/front-end/frontend.js', array('jquery'), null, true);
 
-        if (is_singular('farm_listing') || is_page('farms-for-sale') || is_front_page()) {
+        if (is_singular('farm_listing') || is_page('farms-for-sale') || is_page('my-favorites') || is_front_page()) {
             wp_enqueue_style('cf7ra-utilities-style', plugin_dir_url(__FILE__) . '/assets/front-end/farm-single/css/utilities.css');
             wp_enqueue_style('cf7ra-slick-theme-style', plugin_dir_url(__FILE__) . '/assets/front-end/farm-single/css/slick-theme.css');
             wp_enqueue_style('cf7ra-slick-style', plugin_dir_url(__FILE__) . '/assets/front-end/farm-single/css/slick.css');

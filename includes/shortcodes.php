@@ -199,6 +199,8 @@ function cf7ra_myfav_display_listings()
 
 
     ob_start();
+    echo '<section class="farm-listing-ajax-section">';
+    echo '<div class="row">';
     $user_id = get_current_user_id();
     if ($user_id) {
         $favorites = get_user_meta($user_id, 'favorite_posts', true);
@@ -220,55 +222,42 @@ function cf7ra_myfav_display_listings()
                 }
                 $is_favorite = true;
         ?>
-                <div
-                    class="et_pb_column et_pb_column_1_3 et_pb_column_9 et_pb_css_mix_blend_mode_passthrough padding-up-btm-30 <?php if ($i == 3) { ?>  et-last-child <?php } ?>">
-                    <div class="et_pb_module et_pb_image et_pb_image_0 et_pb_has_overlay">
-                        <a href="<?php echo get_permalink($post_id); ?>"><span class="et_pb_image_wrap"><img
-                                    src="<?php echo get_the_post_thumbnail_url($post_id, 'large'); ?>"
-                                    style="max-width: 330px;max-height: 250px;min-height: 250px;" /></span></a>
-                    </div>
+                <div class="cell-md-4">
+                    <div class="farm-listing-item">
+                        <div class="farm-listing-item-image">
+                            <a href="<?php echo get_permalink($post_id); ?>">
+                                <img src="<?php echo get_the_post_thumbnail_url($post_id, 'large'); ?>" />
+                            </a>
+                        </div>
+                        <div class="farm-listing-item-capicity">
+                            <h3 style="font-size: larger;"><?php echo get_the_title($post_id); ?></h3>
+                            <p><b>Asking Price: $</b><?php echo number_format($asking_price); ?></p>
+                            <p><b>Land Area: </b><?php echo $land_unit . " " . $land_unit_type; ?></p>
+                            <p><b>Capacity: <?php echo $farm_capacity, ' Cows'; ?></b></p>
+                        </div>
+                        <div class="ajax-btn-wrap">
+                            <a class="view-farm-detail-btn" href="<?php echo get_permalink($post_id); ?>">View more</a>
 
+                            <a class="add-remove-favorites add-to-fav-trigger"
+                                style="<?php if (!$is_favorite) {
+                                            echo 'display: inline-block;';
+                                        } else {
+                                            echo 'display: none;';
+                                        } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
+                                title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
 
-                    <h4 class="et_pb_module_heading"><?php echo get_the_title($post_id); ?></h4>
+                            <a class="add-remove-favorites remove-from-fav-trigger"
+                                style="<?php if ($is_favorite) {
+                                            echo 'display: inline-block;';
+                                        } else {
+                                            echo 'display: none;';
+                                        } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
+                                title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
 
-
-                    <h5 class="et_pb_module_heading">Asking Price: $<?php echo number_format($asking_price); ?></h5>
-
-
-                    <h6 class="et_pb_module_heading">Land Area: <?php echo $land_unit . " " . $land_unit_type; ?></h6>
-
-                    <div class="et_pb_module et_pb_text">
-                        <div class="et_pb_text_inner">
-                            <p><span>Capacity: <?php echo $farm_capacity, ' Cows'; ?></span></p>
                         </div>
                     </div>
-                    <div class="et_pb_button_module_wrapper et_pb_button_0_wrapper et_pb_module" style="display: flex;">
-                        <a class="view-farm-detail-btn my-fav-listing-btn" style="color: #ffffff !important;background-color: #000000 !important;" href="<?php echo get_the_permalink($post_id); ?>">View more</a>
-
-                        <a class="add-remove-favorites add-to-fav-trigger my-fav-listing-btn"
-                            style="color: #ffffff !important;
-    background-color: #000000 !important; <?php if (!$is_favorite) {
-                                                echo 'display: inline-block;';
-                                            } else {
-                                                echo 'display: none;';
-                                            } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
-                            title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
-
-                        <a class="add-remove-favorites remove-from-fav-trigger my-fav-listing-btn"
-                            style="color: #ffffff !important;
-    background-color: #000000 !important;<?php if ($is_favorite) {
-                                                echo 'display: inline-block;';
-                                            } else {
-                                                echo 'display: none;';
-                                            } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
-                            title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
-
-                    </div>
                 </div>
-        <?php if ($i == 3) {
-                    $i == 0;
-                }
-                $i++;
+        <?php
             }
         } else {
             echo "No favorites added";
@@ -276,7 +265,9 @@ function cf7ra_myfav_display_listings()
     } else {
         echo "Please login to review. <a href=" . esc_url(wp_login_url(get_permalink())) . ">Click here to login.</a>";
     }
+    echo '</div>';
 
+    echo '</section>';
 
     //echo '<div class="et_pb_row et_pb_row_5 et_pb_gutters2">';
 
