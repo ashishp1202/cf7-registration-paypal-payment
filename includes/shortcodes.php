@@ -1694,6 +1694,9 @@ function cf7ra_fn_farmListing_searchFilters()
                         <option value="1500">1500-Up</option>
                     </select>
                 </li>
+                <li>
+                    <button class="dairy-farm-search-submit" title="Search Dairy Farms">Search Dairy Farms</button>
+                </li>
             </ul>
         </div>
     </section>
