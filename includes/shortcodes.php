@@ -1,6 +1,7 @@
 <?php
-add_shortcode('cf7ra_user_listings', 'cf7ra_display_user_listings');
 
+//////////////////////////////////// 1. cf7ra_user_listings shortcode //////////////////////////////////////////////////
+add_shortcode('cf7ra_user_listings', 'cf7ra_display_user_listings');
 function cf7ra_display_user_listings()
 {
     if (!is_user_logged_in()) {
@@ -10,9 +11,9 @@ function cf7ra_display_user_listings()
     $user_id = get_current_user_id();
 
     $args = array(
-        'post_type'      => 'farm_listing',
+        'post_type' => 'farm_listing',
         'posts_per_page' => -1,
-        'author'         => $user_id,
+        'author' => $user_id,
     );
 
     $listings = new WP_Query($args);
@@ -33,10 +34,12 @@ function cf7ra_display_user_listings()
         <th>Actions</th>
     </tr>
     <?php
+
     $i = 1;
-    while ($listings->have_posts()) : $listings->the_post();
+    while ($listings->have_posts()):
+        $listings->the_post();
         $listing_plan = get_post_meta(get_the_ID(), 'cf7ra_field_mappings_listing_plan', true);
-        $total_acres = get_post_meta(get_the_ID(), 'cf7ra_field_mappings_total_acres',  true);
+        $total_acres = get_post_meta(get_the_ID(), 'cf7ra_field_mappings_total_acres', true);
         $farm_capacity = get_post_meta(get_the_ID(), 'cf7ra_field_mappings_farm_capacity', true);
         $asking_price = get_post_meta(get_the_ID(), 'cf7ra_field_mappings_asking_price', true);
         $post_id = get_the_ID();
@@ -48,7 +51,8 @@ function cf7ra_display_user_listings()
             <td><?php echo $total_acres; ?></td>
             <td><?php echo "$" . $asking_price; ?></td>
             <td><?php echo $farm_capacity; ?></td>
-            <td><a href="<?php echo add_query_arg('post_id', get_the_ID(), site_url('/edit-listing/')); ?>">Edit</a> / <button class="delete-listing" data-id="<?php echo $post_id; ?>" data-nonce="<?php echo $nonce; ?>">
+            <td><a href="<?php echo add_query_arg('post_id', get_the_ID(), site_url('/edit-listing/')); ?>">Edit</a> / <button
+                    class="delete-listing" data-id="<?php echo $post_id; ?>" data-nonce="<?php echo $nonce; ?>">
                     Delete
                 </button></td>
         </tr>
@@ -61,8 +65,9 @@ function cf7ra_display_user_listings()
     return ob_get_clean();
 }
 
-add_shortcode('cf7ra_listings', 'cf7ra_display_listings');
 
+/////////////////////////////////////// 2. cf7ra_listings shortcode ///////////////////////////////////////////////////////////////
+add_shortcode('cf7ra_listings', 'cf7ra_display_listings');
 function cf7ra_display_listings($atts)
 {
     /* if (!is_user_logged_in()) {
@@ -70,14 +75,23 @@ function cf7ra_display_listings($atts)
     } */
 
     $atts = shortcode_atts(array(
-        'posts_per_page' => 6, // default value
+        'posts_per_page' => 6,
+        'is_featured' => 'no',
     ), $atts, 'custom_posts');
 
+    $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+
     $args = array(
-        'post_type'      => 'farm_listing',
-        'post_status'   => 'published',
+        'post_type' => 'farm_listing',
+        'post_status' => 'published',
         'posts_per_page' => $atts['posts_per_page'],
+        'paged' => $paged,
     );
+    if ($atts['is_featured'] === 'yes') {
+        $args['meta_key'] = 'cf7ra_field_mappings_listing_plan';
+        $args['meta_compare'] = '=';
+        $args['meta_value'] = 'Featured Listing Plan';
+    }
 
     $listings = new WP_Query($args);
 
@@ -86,12 +100,12 @@ function cf7ra_display_listings($atts)
     }
 
     ob_start();
-    //echo '<div class="et_pb_row et_pb_row_5 et_pb_gutters2">';
-    ?>
+    echo '<section class="farm-listing-ajax-section">';
+    echo '<div class="row">';
 
-    <?php
     $i = 1;
-    while ($listings->have_posts()) : $listings->the_post();
+    while ($listings->have_posts()):
+        $listings->the_post();
         $post_id = get_the_ID();
 
         $farm_capacity = get_post_meta($post_id, 'cf7ra_field_mappings_farm_capacity', true);
@@ -107,69 +121,76 @@ function cf7ra_display_listings($atts)
             $land_unit = get_post_meta($post_id, 'cf7ra_field_mappings_total_hectare', true);
         }
 
-
-
         $nonce = wp_create_nonce('delete_listing_' . $post_id);
         $user_id = get_current_user_id();
         if ($user_id) {
             $favorites = get_user_meta($user_id, 'favorite_posts', true);
             $is_favorite = is_array($favorites) && in_array($post_id, $favorites);
         }
-
     ?>
+        <div class="cell-md-4">
+            <div class="farm-listing-item">
+                <div class="farm-listing-item-image">
+                    <a href="<?php echo get_permalink($post_id); ?>">
+                        <img src="<?php echo get_the_post_thumbnail_url($post_id, 'large'); ?>" />
+                    </a>
+                </div>
+                <div class="farm-listing-item-capicity">
+                    <h3 style="font-size: larger;"><?php echo get_the_title($post_id); ?></h3>
+                    <p><b>Asking Price: $</b><?php echo $asking_price; ?></p>
+                    <p><b>Land Area: </b><?php echo $land_unit . " " . $land_unit_type; ?></p>
+                    <p><b>Capacity: <?php echo $farm_capacity, ' Cows'; ?></b></p>
+                </div>
+                <div class="ajax-btn-wrap">
+                    <a class="view-farm-detail-btn" href="<?php echo get_permalink($post_id); ?>">View more</a>
 
-        <div class="et_pb_column et_pb_column_1_3 et_pb_column_9 et_pb_css_mix_blend_mode_passthrough padding-up-btm-30 <?php if ($i == 3) { ?>  et-last-child <?php } ?>">
-            <div class="et_pb_module et_pb_image et_pb_image_0 et_pb_has_overlay farm-listing-image-shortcode">
-                <a href="<?php echo get_permalink($post_id); ?>"><span class="et_pb_image_wrap"><img src="<?php echo get_the_post_thumbnail_url($post_id, 'large'); ?>" style="max-width: 330px;max-height: 250px;min-height: 250px;" /></span></a>
-            </div>
+                    <a class="add-remove-favorites add-to-fav-trigger"
+                        style="<?php if (!$is_favorite) {
+                                    echo 'display: inline-block;';
+                                } else {
+                                    echo 'display: none;';
+                                } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
+                        title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
 
+                    <a class="add-remove-favorites remove-from-fav-trigger"
+                        style="<?php if ($is_favorite) {
+                                    echo 'display: inline-block;';
+                                } else {
+                                    echo 'display: none;';
+                                } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
+                        title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
 
-            <h4 class="et_pb_module_heading"><?php echo get_the_title($post_id); ?></h4>
-
-
-            <h5 class="et_pb_module_heading">Asking Price: $<?php echo $asking_price; ?></h5>
-
-
-            <h6 class="et_pb_module_heading">Land Area: <?php echo $land_unit . " " . $land_unit_type; ?></h6>
-
-            <div class="et_pb_module et_pb_text">
-                <div class="et_pb_text_inner">
-                    <p><span>Capacity: <?php echo $farm_capacity, ' Cows'; ?></span></p>
                 </div>
             </div>
-            <div class="et_pb_button_module_wrapper et_pb_button_0_wrapper et_pb_module">
-                <!-- <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light" href="<?php echo get_permalink($post_id); ?>">Contact Agent</a> -->
-
-                <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites add-to-fav-trigger" style="<?php if (!$is_favorite) {
-                                                                                                                                echo 'display: inline-block;';
-                                                                                                                            } else {
-                                                                                                                                echo 'display: none;';
-                                                                                                                            } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
-
-                <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites remove-from-fav-trigger" style="<?php if ($is_favorite) {
-                                                                                                                                        echo 'display: inline-block;';
-                                                                                                                                    } else {
-                                                                                                                                        echo 'display: none;';
-                                                                                                                                    } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
-
-            </div>
         </div>
-        <?php if ($i == 3) {
-            $i == 0;
-        } ?>
         <?php
         $i++;
     endwhile;
-
-    //echo '</div>';
-
     wp_reset_postdata();
 
+    echo '</div>';
+
+    // Pagination
+    $big = 999999999; // need an unlikely integer
+    echo '<div class="farm-listing-ajax-pagination">';
+    echo paginate_links(array(
+        'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+        'format' => '?paged=%#%',
+        'current' => max(1, $paged),
+        'total' => $listings->max_num_pages,
+        'prev_text' => __('« Prev'),
+        'next_text' => __('Next »'),
+    ));
+    echo '</div>';
+
+    echo '</section>';
     return ob_get_clean();
 }
 
-add_shortcode('cf7ra_myfav_listings', 'cf7ra_myfav_display_listings');
 
+
+/////////////////////////////////////// 3. cf7ra_myfav_listings shortcode ////////////////////////////////////////////////////////
+add_shortcode('cf7ra_myfav_listings', 'cf7ra_myfav_display_listings');
 function cf7ra_myfav_display_listings()
 {
     if (!is_user_logged_in()) {
@@ -199,9 +220,12 @@ function cf7ra_myfav_display_listings()
                 }
                 $is_favorite = true;
         ?>
-                <div class="et_pb_column et_pb_column_1_3 et_pb_column_9 et_pb_css_mix_blend_mode_passthrough padding-up-btm-30 <?php if ($i == 3) { ?>  et-last-child <?php } ?>">
+                <div
+                    class="et_pb_column et_pb_column_1_3 et_pb_column_9 et_pb_css_mix_blend_mode_passthrough padding-up-btm-30 <?php if ($i == 3) { ?>  et-last-child <?php } ?>">
                     <div class="et_pb_module et_pb_image et_pb_image_0 et_pb_has_overlay">
-                        <a href="<?php echo get_permalink($post_id); ?>"><span class="et_pb_image_wrap"><img src="<?php echo get_the_post_thumbnail_url($post_id, 'large'); ?>" style="max-width: 330px;max-height: 250px;min-height: 250px;" /></span></a>
+                        <a href="<?php echo get_permalink($post_id); ?>"><span class="et_pb_image_wrap"><img
+                                    src="<?php echo get_the_post_thumbnail_url($post_id, 'large'); ?>"
+                                    style="max-width: 330px;max-height: 250px;min-height: 250px;" /></span></a>
                     </div>
 
 
@@ -219,21 +243,25 @@ function cf7ra_myfav_display_listings()
                         </div>
                     </div>
                     <div class="et_pb_button_module_wrapper et_pb_button_0_wrapper et_pb_module" style="display: flex;">
-                        <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light my-fav-listing-btn" style="color: #ffffff !important;background-color: #000000 !important;" href="<?php echo get_the_permalink($post_id); ?>">Contact Agent</a>
+                        <a class="view-farm-detail-btn my-fav-listing-btn" style="color: #ffffff !important;background-color: #000000 !important;" href="<?php echo get_the_permalink($post_id); ?>">View more</a>
 
-                        <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites add-to-fav-trigger my-fav-listing-btn" style="color: #ffffff !important;
+                        <a class="add-remove-favorites add-to-fav-trigger my-fav-listing-btn"
+                            style="color: #ffffff !important;
     background-color: #000000 !important; <?php if (!$is_favorite) {
                                                 echo 'display: inline-block;';
                                             } else {
                                                 echo 'display: none;';
-                                            } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
+                                            } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
+                            title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
 
-                        <a class="et_pb_button et_pb_button_0 et_pb_bg_layout_light add-remove-favorites remove-from-fav-trigger my-fav-listing-btn" style="color: #ffffff !important;
+                        <a class="add-remove-favorites remove-from-fav-trigger my-fav-listing-btn"
+                            style="color: #ffffff !important;
     background-color: #000000 !important;<?php if ($is_favorite) {
                                                 echo 'display: inline-block;';
                                             } else {
                                                 echo 'display: none;';
-                                            } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>" title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
+                                            } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
+                            title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
 
                     </div>
                 </div>
@@ -257,7 +285,7 @@ function cf7ra_myfav_display_listings()
 }
 
 
-// Edit listing shortcode
+///////////////////////////////////////////// 4. Edit listing shortcode  //////////////////////////////////////////////
 add_shortcode('cf7ra_edit_listings', 'cf7ra_edit_user_listings');
 function cf7ra_edit_user_listings()
 {
@@ -530,17 +558,17 @@ function cf7ra_edit_user_listings()
         // Check if files are uploaded
         if (!empty($_FILES['my_file_input']['name'][0])) {
             $files = $_FILES['my_file_input'];
-            $uploaded_urls   = [];
+            $uploaded_urls = [];
 
             // Loop through each file
             foreach ($files['name'] as $key => $value) {
                 if ($files['name'][$key]) {
                     $file = [
-                        'name'     => $files['name'][$key],
-                        'type'     => $files['type'][$key],
+                        'name' => $files['name'][$key],
+                        'type' => $files['type'][$key],
                         'tmp_name' => $files['tmp_name'][$key],
-                        'error'    => $files['error'][$key],
-                        'size'     => $files['size'][$key]
+                        'error' => $files['error'][$key],
+                        'size' => $files['size'][$key]
                     ];
 
                     $_FILES['single_file'] = $file;
@@ -595,7 +623,7 @@ function cf7ra_edit_user_listings()
     $street_address_1 = get_post_meta($post_id, 'cf7ra_field_mappings_street_address_1', true);
     $address_sip = get_post_meta($post_id, 'cf7ra_field_mappings_address_sip', true);
     $address_city = get_post_meta($post_id, 'cf7ra_field_mappings_address_city', true);
-    $address_state = get_post_meta($post_id, 'cf7ra_field_mappings_address_state',  true);
+    $address_state = get_post_meta($post_id, 'cf7ra_field_mappings_address_state', true);
     $address_country = get_post_meta($post_id, 'cf7ra_field_mappings_address_country', true);
     $address_display = get_post_meta($post_id, 'cf7ra_field_mappings_address_display', true);
     $general_location = get_post_meta($post_id, 'cf7ra_field_mappings_general_location', true);
@@ -604,17 +632,17 @@ function cf7ra_edit_user_listings()
     $last_name = get_post_meta($post_id, 'cf7ra_field_mappings_custom_last_name', true);
     $seller_street_address = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_street_address', true);
     $seller_street_address1 = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_street_address1', true);
-    $seller_zip = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_zip',  true);
+    $seller_zip = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_zip', true);
     $seller_city = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_city', true);
     $seller_state = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_state', true);
     $seller_primary_phone = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_primary_phone', true);
-    $seller_sec_phone = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_sec_phone',  true);
+    $seller_sec_phone = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_sec_phone', true);
     $seller_company_url = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_company_url', true);
     $seller_calling_time = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_calling_time', true);
-    $seller_is_realtor = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_is_realtor',  true);
-    $listing_sale_type = get_post_meta($post_id, 'cf7ra_field_mappings_custom_listing_sale_type',  true);
+    $seller_is_realtor = get_post_meta($post_id, 'cf7ra_field_mappings_custom_seller_is_realtor', true);
+    $listing_sale_type = get_post_meta($post_id, 'cf7ra_field_mappings_custom_listing_sale_type', true);
     $irrigated = get_post_meta($post_id, 'cf7ra_field_mappings_custom_irrigated', true);
-    $type_of_housing = get_post_meta($post_id, 'cf7ra_field_mappings_type_of_housing',  true);
+    $type_of_housing = get_post_meta($post_id, 'cf7ra_field_mappings_type_of_housing', true);
     $listing_number_type = get_post_meta($post_id, 'cf7ra_field_mappings_listing_number_type', true);
     $manure_storage = get_post_meta($post_id, 'cf7ra_field_mappings_manure_storage', true);
     $housing_name = get_post_meta($post_id, 'cf7ra_field_mappings_housing_name', true);
@@ -765,15 +793,15 @@ function cf7ra_edit_user_listings()
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Type of Housing', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>   <input id="stanchion" type="checkbox" name="housing_name[]" value="Stanchion" ' .  (in_array('Stanchion', $housing_name) ? 'checked' : '') . ' />
+        '<td>   <input id="stanchion" type="checkbox" name="housing_name[]" value="Stanchion" ' . (in_array('Stanchion', $housing_name) ? 'checked' : '') . ' />
                                     <label for="stanchion">Stanchion</label>
-                                    <input id="tieStalls" type="checkbox" name="housing_name[]" value="Tie Stalls"  ' .  (in_array('Tie Stalls', $housing_name) ? 'checked' : '') . '  />
+                                    <input id="tieStalls" type="checkbox" name="housing_name[]" value="Tie Stalls"  ' . (in_array('Tie Stalls', $housing_name) ? 'checked' : '') . '  />
                                     <label for="tieStalls">Tie Stalls</label>
-                                    <input id="freeStalls" type="checkbox" name="housing_name[]" value="Free Stalls" ' .  (in_array('Free Stalls', $housing_name) ? 'checked' : '') . ' />
+                                    <input id="freeStalls" type="checkbox" name="housing_name[]" value="Free Stalls" ' . (in_array('Free Stalls', $housing_name) ? 'checked' : '') . ' />
                                     <label for="freeStalls">Free Stalls</label>
-                                    <input id="beddingPack" type="checkbox" name="housing_name[]" value="Bedding Pack" ' .  (in_array('Bedding Pack', $housing_name) ? 'checked' : '') . ' />
+                                    <input id="beddingPack" type="checkbox" name="housing_name[]" value="Bedding Pack" ' . (in_array('Bedding Pack', $housing_name) ? 'checked' : '') . ' />
                                     <label for="beddingPack">Bedding Pack</label>
-                                    <input id="corral" type="checkbox" name="housing_name[]" value="Corral" ' .  (in_array('Corral', $housing_name) ? 'checked' : '') . '/>
+                                    <input id="corral" type="checkbox" name="housing_name[]" value="Corral" ' . (in_array('Corral', $housing_name) ? 'checked' : '') . '/>
                                     <label for="corral">Corral</label></td>' .
         '</tr>';
 
@@ -782,13 +810,13 @@ function cf7ra_edit_user_listings()
         '<label for="hcf_author">' . __('Milking Facilities', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
         '<td>
-          <input id="parallelParlor" type="checkbox" name="milk_facility[]" value="Parallel Parlor"  ' .  (in_array('Parallel Parlor', $milk_facility) ? 'checked' : '') . '  />
+          <input id="parallelParlor" type="checkbox" name="milk_facility[]" value="Parallel Parlor"  ' . (in_array('Parallel Parlor', $milk_facility) ? 'checked' : '') . '  />
                                     <label for="parallelParlor">Parallel Parlor</label>
-                                       <input id="herringboneParlor" type="checkbox" name="milk_facility[]" value="Herringbone Parlor"  ' .  (in_array('Herringbone Parlor', $milk_facility) ? 'checked' : '') . '  />
+                                       <input id="herringboneParlor" type="checkbox" name="milk_facility[]" value="Herringbone Parlor"  ' . (in_array('Herringbone Parlor', $milk_facility) ? 'checked' : '') . '  />
                                     <label for="herringboneParlor">Herringbone Parlor</label>
-                                    <input id="stallBarn" type="checkbox" name="milk_facility[]" value="Stall Barn"  ' .  (in_array('Stall Barn', $milk_facility) ? 'checked' : '') . '  />
+                                    <input id="stallBarn" type="checkbox" name="milk_facility[]" value="Stall Barn"  ' . (in_array('Stall Barn', $milk_facility) ? 'checked' : '') . '  />
                                     <label for="stallBarn">Stall Barn</label>
-                                     <input id="rotary" type="checkbox" name="milk_facility[]" value="Rotary"  ' .  (in_array('Rotary', $milk_facility) ? 'checked' : '') . '  />
+                                     <input id="rotary" type="checkbox" name="milk_facility[]" value="Rotary"  ' . (in_array('Rotary', $milk_facility) ? 'checked' : '') . '  />
                                     <label for="rotary">Rotary</label>
         </td>' .
         '</tr>';
@@ -799,13 +827,13 @@ function cf7ra_edit_user_listings()
         '<label for="hcf_author">' . __('Feed Storage', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
         '<td>
-          <input id="uprightSilos" type="checkbox" name="feed_storage[]" value="Upright Silos"  ' .  (in_array('Upright Silos', $feed_storage) ? 'checked' : '') . '  />
+          <input id="uprightSilos" type="checkbox" name="feed_storage[]" value="Upright Silos"  ' . (in_array('Upright Silos', $feed_storage) ? 'checked' : '') . '  />
                                     <label for="uprightSilos">Upright Silos</label>
-                                     <input id="bunkerSilos" type="checkbox" name="feed_storage[]" value="Bunker Silos"  ' .  (in_array('Bunker Silos', $feed_storage) ? 'checked' : '') . '  />
+                                     <input id="bunkerSilos" type="checkbox" name="feed_storage[]" value="Bunker Silos"  ' . (in_array('Bunker Silos', $feed_storage) ? 'checked' : '') . '  />
                                     <label for="bunkerSilos">Bunker Silos</label>
-                                    <input id="agBags" type="checkbox" name="feed_storage[]" value="Ag Bags"  ' .  (in_array('Ag Bags', $feed_storage) ? 'checked' : '') . '  />
+                                    <input id="agBags" type="checkbox" name="feed_storage[]" value="Ag Bags"  ' . (in_array('Ag Bags', $feed_storage) ? 'checked' : '') . '  />
                                     <label for="agBags">Ag Bags</label>
-                                     <input id="other" type="checkbox" name="feed_storage[]" value="Other"  ' .  (in_array('Other', $feed_storage) ? 'checked' : '') . '  />
+                                     <input id="other" type="checkbox" name="feed_storage[]" value="Other"  ' . (in_array('Other', $feed_storage) ? 'checked' : '') . '  />
                                     <label for="other">Other</label>
         </td>' .
         '</tr>';
@@ -1523,7 +1551,7 @@ function cf7ra_edit_user_listings()
 
         <?php foreach ($photo_url as $image_url) { ?>
             <img src="<?php echo esc_url($image_url); ?>" style="max-width:300px; height:auto;" />
-<?php  }
+    <?php }
         '</td>' .
             '</tr>';
     }
@@ -1556,4 +1584,118 @@ function cf7ra_edit_user_listings()
     echo '</table></form>';
 
     return ob_get_clean();
+}
+
+
+/////////////////////////////////// 6. cf7ra_farmListing_searchFilters shortcode /////////////////////////////////////////////////////////
+add_shortcode('cf7ra_farmListing_searchFilters', 'cf7ra_fn_farmListing_searchFilters');
+function cf7ra_fn_farmListing_searchFilters()
+{
+    ob_start(); ?>
+    <section class="farm-ajax-search-section">
+        <div class="farm-search-wrapper">
+            <ul class="ajax-search-filter-list">
+                <li>
+                    <select name="farm-price-option" id="farm-price-option" class="select">
+                        <option value="">Any Price</option>
+                        <option value="0-10">Under $100,000</option>
+                        <option value="10-30">$100,000 to $299,999</option>
+                        <option value="30-60">$300,000 to $599,999</option>
+                        <option value="60-100">$600,000 to $999,999</option>
+                        <option value="100-500">$1,000,000 to $5,000,000</option>
+                        <option value="500-1000">$5,000,000 and $10,000,000</option>
+                        <option value="1000">$10,000,000 and Up</option>
+                    </select>
+                </li>
+
+                <li>
+                    <select name="farm-location-option" id="farm-location-option" class="select">
+                        <option value="Alabama">Alabama</option>
+                        <option value="Alaska">Alaska</option>
+                        <option value="Alberta">Alberta</option>
+                        <option value="Arizona">Arizona</option>
+                        <option value="Arkansas">Arkansas</option>
+                        <option value="British Columbia">British Columbia</option>
+                        <option value="California">California</option>
+                        <option value="Colorado">Colorado</option>
+                        <option value="Connecticut">Connecticut</option>
+                        <option value="Delaware">Delaware</option>
+                        <option value="Florida">Florida</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Hawaii">Hawaii</option>
+                        <option value="Idaho">Idaho</option>
+                        <option value="Illinois">Illinois</option>
+                        <option value="Indiana">Indiana</option>
+                        <option value="Iowa">Iowa</option>
+                        <option value="Kansas">Kansas</option>
+                        <option value="Kentucky">Kentucky</option>
+                        <option value="Louisiana">Louisiana</option>
+                        <option value="Maine">Maine</option>
+                        <option value="Manitoba">Manitoba</option>
+                        <option value="Maryland">Maryland</option>
+                        <option value="Massachusetts">Massachusetts</option>
+                        <option value="Michigan">Michigan</option>
+                        <option value="Minnesota">Minnesota</option>
+                        <option value="Mississippi">Mississippi</option>
+                        <option value="Missouri">Missouri</option>
+                        <option value="Montana">Montana</option>
+                        <option value="Nebraska">Nebraska</option>
+                        <option value="Nevada">Nevada</option>
+                        <option value="New Brunswick">New Brunswick</option>
+                        <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                        <option value="New Hampshire">New Hampshire</option>
+                        <option value="New Jersey">New Jersey</option>
+                        <option value="New Mexico">New Mexico</option>
+                        <option value="NNew YorkY">New York</option>
+                        <option value="North Carolina">North Carolina</option>
+                        <option value="North Dakota">North Dakota</option>
+                        <option value="Nova Scotia">Nova Scotia</option>
+                        <option value="Ohio">Ohio</option>
+                        <option value="Oklahoma">Oklahoma</option>
+                        <option value="Ontario">Ontario</option>
+                        <option value="Oregon">Oregon</option>
+                        <option value="Pennsylvania">Pennsylvania</option>
+                        <option value="Prince Edward Island">Prince Edward Island</option>
+                        <option value="Quebec">Quebec</option>
+                        <option value="Saskatchewan">Saskatchewan</option>
+                        <option value="Rhode Island">Rhode Island</option>
+                        <option value="South Carolina">South Carolina</option>
+                        <option value="South Dakota" selected="selected">South Dakota</option>
+                        <option value="Tennessee">Tennessee</option>
+                        <option value="Texas">Texas</option>
+                        <option value="Utah">Utah</option>
+                        <option value="Vermont">Vermont</option>
+                        <option value="Virginia">Virginia</option>
+                        <option value="Washington">Washington</option>
+                        <option value="Washington, DC">Washington, DC</option>
+                        <option value="West Virginia">West Virginia</option>
+                        <option value="Wisconsin">Wisconsin</option>
+                        <option value="Wyoming">Wyoming</option>
+                    </select>
+                </li>
+
+                <li>
+                    <select name="farm-land-option" id="farm-land-option" class="select">
+                        <option value="0">Any Land Size</option>
+                        <option value="1-49">1-49 acres</option>
+                        <option value="50-299">50-299 acres</option>
+                        <option value="300-999">300-999 acres</option>
+                        <option value="1000">1000 acres or more</option>
+                    </select>
+                </li>
+
+                <li>
+                    <select name="farm-land-option" id="farm-land-option" class="select">
+                        <option value="0">Any Cow Capacity</option>
+                        <option value="50-99">50-99</option>
+                        <option value="100-299">100-299</option>
+                        <option value="300-699">300-699</option>
+                        <option value="700-1499">700-1499</option>
+                        <option value="1500">1500-Up</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+    </section>
+<?php return ob_get_clean();
 }

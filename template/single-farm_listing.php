@@ -68,13 +68,13 @@ get_header(); ?>
             <section class="home-header-menu-section">
                 <div class="row align-items-center justify-content-between">
                     <div class="cell-md-6">
-                        <ul class="menu-wrap d-flex align-items-center">
+                        <!-- <ul class="menu-wrap d-flex align-items-center">
                             <li class="menu-item"><a href="#">Search</a></li>
                             <li class="menu-item"><a href="#">Overview</a></li>
                             <li class="menu-item"><a href="#">Payement</a></li>
                             <li class="menu-item"><a href="#">Market Insights</a></li>
                             <li class="menu-item"><a href="#">Schools</a></li>
-                        </ul>
+                        </ul> -->
                     </div>
 
                     <div class="cell-md-6">
@@ -116,19 +116,29 @@ get_header(); ?>
                     </div>
                 </div>
             </section>
-
-            <section class="home-banner-slider-section">
-                <div class="banner-slider">
-                    <?php foreach ($photo_url as $image_url) { ?>
-                        <div class="slider-item">
-                            <img src="<?php echo $image_url; ?>" alt="image">
+            <?php if (!empty($photo_url)) { ?>
+                <section class="home-banner-slider-section">
+                    <div class="row">
+                        <div class="cell-md-8">
+                            <div class="banner-slider">
+                                <?php foreach ($photo_url as $image_url) { ?>
+                                    <div class="slider-item">
+                                        <img src="<?php echo $image_url; ?>" alt="image">
+                                    </div>
+                                <?php } ?>
+                            </div>
                         </div>
-                    <?php  } ?>
 
-
-
-                </div>
-            </section>
+                        <div class="cell-md-4">
+                            <div class="banner-slider-thumb-grid">
+                                <?php foreach ($photo_url as $image_url) { ?>
+                                    <div class="banner-grid-item"><img src="<?php echo $image_url; ?>" alt="image"></div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            <?php } ?>
 
             <section class="home-detail-section">
                 <!-- <div class="attribute-wrap">
@@ -207,26 +217,6 @@ get_header(); ?>
                                     class="feather inline-block  ">
                                     <g fill="none" stroke="black" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                    </g>
-                                </svg>
-                                <div class="home-feature-item-title">House Description</div>
-                            </div>
-
-                            <div class="home-feature-item-content">
-                                <?php echo $description_buyers_read; ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="cell-md-6">
-                        <div class="home-feature-item">
-                            <div class="home-feature-item-title-wrap">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 25 25"
-                                    class="feather inline-block  ">
-                                    <g fill="none" stroke="black" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
                                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                     </g>
@@ -234,18 +224,18 @@ get_header(); ?>
                                 <div class="home-feature-item-title">Highlights</div>
                             </div>
 
-                            <div class="home-feature-item-content">
-                                <div class="home-feature">
-                                    Price : <?php echo $asking_price; ?>
-                                </div>
-                                <div class="home-feature border-bottom">
-                                    Land : <?php echo $land_unit . " " . $land_unit_type; ?>
-                                </div>
+                            <ul class="home-feature-item-list">
+                                <li class="home-feature">
+                                    <span class="bold">Price :</span> <?php echo $asking_price; ?>
+                                </li>
+                                <li class="home-feature">
+                                    <span class="bold">Land :</span> <?php echo $land_unit . " " . $land_unit_type; ?>
+                                </li>
 
-                                <div class="home-feature border-bottom">
+                                <li class="home-feature">
                                     <span class="bold">Heifer Facilities: </span>
                                     <?php echo get_post_meta($post_id, 'cf7ra_field_mappings_type_of_housing', true); ?>
-                                </div>
+                                </li>
 
                                 <!-- <div class="home-feature border-bottom">
                                     <span class="bold">Lot/Acreage </span>
@@ -276,9 +266,31 @@ get_header(); ?>
                                     <span class="bold">Listing ID</span>
                                     2373713
                                 </div> -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cell-md-12">
+                        <div class="home-feature-item">
+                            <div class="home-feature-item-title-wrap">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 25 25"
+                                    class="feather inline-block  ">
+                                    <g fill="none" stroke="black" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                    </g>
+                                </svg>
+                                <div class="home-feature-item-title">House Description</div>
+                            </div>
+
+                            <div class="home-feature-item-content">
+                                <?php echo $description_buyers_read; ?>
                             </div>
                         </div>
                     </div>
+
+
 
                     <!-- <div class="cell-md-6">
                         <div class="home-feature-item">
