@@ -42,9 +42,7 @@ jQuery(document).ready(function ($) {
   $(".delete-listing").click(function () {
     postId = $(this).data("id");
     nonce = $(this).data("nonce");
-    if (!confirm("Are you sure you want to delete this listing?")) {
-      return;
-    }
+
     $.ajax({
       type: "POST",
       url: deleteListing.ajax_url,
@@ -79,9 +77,6 @@ jQuery(document).ready(function ($) {
   $(document).on("click", ".add-to-fav-trigger", function () {
     postId = $(this).data("post-id");
     var parentObj = $(this).closest("div");
-    if (!confirm("Are you sure you want to add to fav?")) {
-      return;
-    }
     $.ajax({
       type: "POST",
       url: deleteListing.ajax_url,
@@ -105,9 +100,7 @@ jQuery(document).ready(function ($) {
   $(document).on("click", ".remove-from-fav-trigger", function () {
     postId = $(this).data("post-id");
     var parentObj = $(this).closest("div");
-    if (!confirm("Are you sure you want to delete this listing?")) {
-      return;
-    }
+
     $.ajax({
       type: "POST",
       url: deleteListing.ajax_url,
@@ -167,6 +160,17 @@ jQuery(document).ready(function ($) {
     },
     false
   );
+  $(document).on("click", ".read-more-toggle", function () {
+    var $content = $(this).siblings(".farm-house-full-description");
+    $content.toggleClass("expanded");
+
+    // Toggle button text
+    if ($content.hasClass("expanded")) {
+      $(this).text("Show Less");
+    } else {
+      $(this).text("Show More");
+    }
+  });
 });
 
 // Function to renumber the Sr. No. column

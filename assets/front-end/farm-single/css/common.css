@@ -1,95 +1,95 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    color: #6b7280;
-    font-family: 'proxima-nova', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    font-size: 16px;
-    max-width: 100%;
-    min-height: 100%;
-    height: auto;
-    margin: 0;
+  color: #6b7280;
+  font-family: "proxima-nova", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  max-width: 100%;
+  min-height: 100%;
+  height: auto;
+  margin: 0;
 }
 
 .container {
-    max-width: 1280px;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
+  max-width: 1280px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .main {
-    position: relative;
-    width: auto;
-    margin-left: auto;
-    margin-right: auto;
-    /* overflow: hidden; */
+  position: relative;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+  /* overflow: hidden; */
 }
 
-.main .container>h1 {
-    padding-top: 50px;
-    padding-bottom: 25px;
+.main .container > h1 {
+  padding-top: 20px;
+  padding-bottom: 10px;
 }
 
 .uppercase {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .btn {
-    display: flex;
-    align-items: center;
-    background: rgb(62, 87, 138);
-    border-color: rgb(62, 87, 138);
-    padding: 8px 16px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  background: rgb(62, 87, 138);
+  border-color: rgb(62, 87, 138);
+  padding: 8px 16px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  border-radius: 0.5rem;
 }
 
 .btn span {
-    font-size: 15px !important;
-    margin-left: 0.75rem !important;
+  font-size: 15px !important;
+  margin-left: 0.75rem !important;
 }
 
 .slick-prev,
 .slick-next {
-    background-color: #000 !important;
+  background-color: #000 !important;
 }
 
 .slick-prev:before,
 .slick-next:before {
-    width: 25px !important;
-    height: 25px !important;
-    top: 15px !important;
-    left: 15px !important;
+  width: 25px !important;
+  height: 25px !important;
+  top: 15px !important;
+  left: 15px !important;
 }
 
 .slick-prev {
-    left: 25px !important;
+  left: 25px !important;
 }
 
 .slick-next {
-    right: 25px !important;
+  right: 25px !important;
 }
 
 .slick-prev,
 .slick-next {
-    opacity: 0 !important;
-    transition: opacity 0.3s ease !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
 }
 
 /* Show arrows when hovering over the slider */
 .slick-slider:hover .slick-prev,
 .slick-slider:hover .slick-next {
-    opacity: 1 !important;
+  opacity: 1 !important;
 }

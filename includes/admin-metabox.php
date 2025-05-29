@@ -324,7 +324,7 @@ function cf7ra__show_from_data($post)
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Detail description for potential buyers to read', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
-        '<td>    <input type="textarea" id="cf7ra_field_mappings_desc_buyers_read" name="cf7ra_field_mappings_description_buyers_read" value="' . esc_attr($description_buyers_read) . '" style="width:100%;" /></td>' .
+        '<td>    <textarea id="cf7ra_field_mappings_desc_buyers_read" name="cf7ra_field_mappings_description_buyers_read" style="width:100%;" />' . $description_buyers_read . '</textarea></td>' .
         '</tr>';
 
     echo '<tr class="form-field">' .

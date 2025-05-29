@@ -30,7 +30,7 @@ function add_to_fav_farm_listing()
 {
 
     if (!is_user_logged_in()) {
-        wp_send_json_success(['message' => 'Please log in.']);
+        wp_send_json_error(['message' => 'You need to login first to add to favorite list.']);
     }
     $user_id = get_current_user_id();
     $post_id = intval($_POST['post_id']);
@@ -43,6 +43,7 @@ function add_to_fav_farm_listing()
     wp_send_json_success(['message' => 'Added to Favorites']);
 }
 add_action('wp_ajax_addtofav_farm_listing', 'add_to_fav_farm_listing');
+add_action('wp_ajax_nopriv_addtofav_farm_listing', 'add_to_fav_farm_listing');
 
 // ajax call for remove from Fav
 function remove_from_fav_farm_listing()
@@ -51,7 +52,7 @@ function remove_from_fav_farm_listing()
     $post_id = intval($_POST['post_id']);
 
     if (!is_user_logged_in()) {
-        wp_send_json_success(['message' => 'Please log in.']);
+        wp_send_json_error(['message' => 'You need to login first to remove from favorite list.']);
     }
 
     $user_id = get_current_user_id();

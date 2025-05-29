@@ -482,6 +482,17 @@
   color: #4b5563;
 }
 
+.farm-house-full-description.expanded {
+  -webkit-line-clamp: unset;
+  max-height: none;
+}
+.farm-house-full-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Show only 4 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
 .home-feature-section .home-feature-item .home-feature-item-content ul {
   padding-left: 15px;
   margin: 0;
