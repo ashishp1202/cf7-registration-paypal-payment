@@ -148,7 +148,9 @@ function cf7ra_handle_form_submission($contact_form)
                 $value = implode(', ', $value);
             }
 
-
+            if ($key === 'asking-price') {
+                $value = (int) preg_replace('/\D/', '', $value);
+            }
             // Skip saving if the value is still empty
             if (!empty($value) || $value === '0') {
                 add_post_meta($farmPostID, $meta_key, sanitize_text_field($value), true);

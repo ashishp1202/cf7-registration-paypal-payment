@@ -103,10 +103,12 @@ function cf7ra__show_from_data($post)
                              <label for="listingLeaseRent">Listing is For Lease/Rent</label>
         </td>' .
         '</tr>';
-
+    if (is_numeric($asking_price)) {
+        $asking_price = number_format($asking_price);
+    }
     echo '<tr class="form-field">' .
         '<th scope="row">' .
-        '<label for="hcf_author">' . __('Asking Price', 'cf7-reg-paypal-addon') . '</label>' .
+        '<label for="hcf_author">' . __('Asking Price ($)', 'cf7-reg-paypal-addon') . '</label>' .
         '</th>' .
         '<td>    <input type="text" id="cf7ra_field_mappings_asking_price" name="cf7ra_field_mappings_asking_price" value="' . esc_attr($asking_price) . '" style="width:100%;" /></td>' .
         '</tr>';
@@ -1038,7 +1040,8 @@ function cf7ra_save_custom_meta_box_data($post_id)
     }
 
     if (isset($_POST['cf7ra_field_mappings_asking_price'])) {
-        update_post_meta($post_id, 'cf7ra_field_mappings_asking_price', sanitize_text_field($_POST['cf7ra_field_mappings_asking_price']));
+        $asking_price = (int) preg_replace('/\D/', '', $_POST['cf7ra_field_mappings_asking_price']);
+        update_post_meta($post_id, 'cf7ra_field_mappings_asking_price', $asking_price);
     }
 
     if (isset($_POST['cf7ra_field_mappings_asking_price_rent'])) {
@@ -1342,3 +1345,49 @@ function add_multipart_form_data_to_post_edit()
     echo ' enctype="multipart/form-data"';
 }
 add_action('post_edit_form_tag', 'add_multipart_form_data_to_post_edit');
+
+add_filter('manage_farm_listing_posts_columns', 'add_asking_price_column');
+function add_asking_price_column($columns)
+{
+    $new_columns = [];
+
+    // 1. Keep the checkbox first
+    if (isset($columns['cb'])) {
+        $new_columns['cb'] = $columns['cb'];
+    }
+    if (isset($columns['title'])) {
+        $new_columns['title'] = $columns['title'];
+    }
+
+    // 2. Add custom columns early
+    $new_columns['asking_price'] = 'Asking Price';
+    $new_columns['farm_state'] = 'State';
+    $new_columns['listing_plan'] = 'Listing Plan';
+
+    // 3. Add the rest of the original columns, skipping ones we've already added
+    foreach ($columns as $key => $value) {
+        if (!in_array($key, ['cb', 'asking_price', 'farm_state', 'listing_plan'])) {
+            $new_columns[$key] = $value;
+        }
+    }
+
+    return $new_columns;
+}
+
+// 2. Populate the custom column with post meta
+add_action('manage_farm_listing_posts_custom_column', 'show_asking_price_column', 10, 2);
+function show_asking_price_column($column, $post_id)
+{
+    if ($column == 'asking_price') {
+        $price = get_post_meta($post_id, 'cf7ra_field_mappings_asking_price', true);
+        echo $price ? '$' . number_format($price) : '—';
+    }
+    if ($column === 'farm_state') {
+        $farm_state = get_post_meta($post_id, 'cf7ra_field_mappings_address_state', true);
+        echo $farm_state ? $farm_state : '—';
+    }
+    if ($column === 'listing_plan') {
+        $listing_plan = get_post_meta($post_id, 'cf7ra_field_mappings_listing_plan', true);
+        echo $listing_plan ? $listing_plan : '—';
+    }
+}

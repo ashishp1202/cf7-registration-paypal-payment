@@ -137,7 +137,7 @@ function cf7ra_display_listings($atts)
                 </div>
                 <div class="farm-listing-item-capicity">
                     <h3 style="font-size: larger;"><?php echo get_the_title($post_id); ?></h3>
-                    <p><b>Asking Price: $</b><?php echo $asking_price; ?></p>
+                    <p><b>Asking Price: $</b><?php echo number_format($asking_price); ?></p>
                     <p><b>Land Area: </b><?php echo $land_unit . " " . $land_unit_type; ?></p>
                     <p><b>Capacity: <?php echo $farm_capacity, ' Cows'; ?></b></p>
                 </div>
@@ -232,7 +232,7 @@ function cf7ra_myfav_display_listings()
                     <h4 class="et_pb_module_heading"><?php echo get_the_title($post_id); ?></h4>
 
 
-                    <h5 class="et_pb_module_heading">Asking Price: $<?php echo $asking_price; ?></h5>
+                    <h5 class="et_pb_module_heading">Asking Price: $<?php echo number_format($asking_price); ?></h5>
 
 
                     <h6 class="et_pb_module_heading">Land Area: <?php echo $land_unit . " " . $land_unit_type; ?></h6>
@@ -311,7 +311,8 @@ function cf7ra_edit_user_listings()
         }
 
         if (isset($_POST['cf7ra_field_mappings_asking_price'])) {
-            update_post_meta($post_id, 'cf7ra_field_mappings_asking_price', sanitize_text_field($_POST['cf7ra_field_mappings_asking_price']));
+            $asking_price = (int) preg_replace('/\D/', '', $_POST['cf7ra_field_mappings_asking_price']);
+            update_post_meta($post_id, 'cf7ra_field_mappings_asking_price', $asking_price);
         }
 
         if (isset($_POST['cf7ra_field_mappings_asking_price_rent'])) {
@@ -1598,18 +1599,19 @@ function cf7ra_fn_farmListing_searchFilters()
                 <li>
                     <select name="farm-price-option" id="farm-price-option" class="select">
                         <option value="">Any Price</option>
-                        <option value="0-10">Under $100,000</option>
-                        <option value="10-30">$100,000 to $299,999</option>
-                        <option value="30-60">$300,000 to $599,999</option>
-                        <option value="60-100">$600,000 to $999,999</option>
-                        <option value="100-500">$1,000,000 to $5,000,000</option>
-                        <option value="500-1000">$5,000,000 and $10,000,000</option>
-                        <option value="1000">$10,000,000 and Up</option>
+                        <option value="0-100000">Under $100,000</option>
+                        <option value="100001-299999">$100,000 to $299,999</option>
+                        <option value="300000-599999">$300,000 to $599,999</option>
+                        <option value="600000-999,999">$600,000 to $999,999</option>
+                        <option value="1000000-5000000">$1,000,000 to $5,000,000</option>
+                        <option value="5000000-10000000">$5,000,000 and $10,000,000</option>
+                        <option value="10000000-10000000000">$10,000,000 and Up</option>
                     </select>
                 </li>
 
                 <li>
                     <select name="farm-location-option" id="farm-location-option" class="select">
+                        <option value="">Any Location</option>
                         <option value="Alabama">Alabama</option>
                         <option value="Alaska">Alaska</option>
                         <option value="Alberta">Alberta</option>
@@ -1660,7 +1662,7 @@ function cf7ra_fn_farmListing_searchFilters()
                         <option value="Saskatchewan">Saskatchewan</option>
                         <option value="Rhode Island">Rhode Island</option>
                         <option value="South Carolina">South Carolina</option>
-                        <option value="South Dakota" selected="selected">South Dakota</option>
+                        <option value="South Dakota">South Dakota</option>
                         <option value="Tennessee">Tennessee</option>
                         <option value="Texas">Texas</option>
                         <option value="Utah">Utah</option>
@@ -1675,27 +1677,27 @@ function cf7ra_fn_farmListing_searchFilters()
                 </li>
 
                 <li>
-                    <select name="farm-land-option" id="farm-land-option" class="select">
-                        <option value="0">Any Land Size</option>
+                    <select name="farm-landsize-option" id="farm-landsize-option" class="select">
+                        <option value="">Any Land Size</option>
                         <option value="1-49">1-49 acres</option>
                         <option value="50-299">50-299 acres</option>
                         <option value="300-999">300-999 acres</option>
-                        <option value="1000">1000 acres or more</option>
+                        <option value="1000-1000000">1000 acres or more</option>
                     </select>
                 </li>
 
                 <li>
-                    <select name="farm-land-option" id="farm-land-option" class="select">
-                        <option value="0">Any Cow Capacity</option>
+                    <select name="farm-cowcapacity-option" id="farm-cowcapacity-option" class="select">
+                        <option value="">Any Cow Capacity</option>
                         <option value="50-99">50-99</option>
                         <option value="100-299">100-299</option>
                         <option value="300-699">300-699</option>
                         <option value="700-1499">700-1499</option>
-                        <option value="1500">1500-Up</option>
+                        <option value="1500-150000">1500-Up</option>
                     </select>
                 </li>
                 <li>
-                    <button class="dairy-farm-search-submit" title="Search Dairy Farms">Search Dairy Farms</button>
+                    <button class="dairy-farm-search-submit" title="Search Dairy Farms" id="dairy-farm-search-submit">Search Dairy Farms</button>
                 </li>
             </ul>
         </div>

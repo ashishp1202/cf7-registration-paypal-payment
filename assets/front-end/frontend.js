@@ -76,7 +76,7 @@ jQuery(document).ready(function ($) {
     });
   });
 
-  $(".add-to-fav-trigger").click(function () {
+  $(document).on("click", ".add-to-fav-trigger", function () {
     postId = $(this).data("post-id");
     var parentObj = $(this).closest("div");
     if (!confirm("Are you sure you want to add to fav?")) {
@@ -102,7 +102,7 @@ jQuery(document).ready(function ($) {
       },
     });
   });
-  $(".remove-from-fav-trigger").click(function () {
+  $(document).on("click", ".remove-from-fav-trigger", function () {
     postId = $(this).data("post-id");
     var parentObj = $(this).closest("div");
     if (!confirm("Are you sure you want to delete this listing?")) {
@@ -121,6 +121,36 @@ jQuery(document).ready(function ($) {
           parentObj.find(".add-remove-favorites").toggle();
         } else {
           alert("Error: " + response.message);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX Error:", error);
+      },
+    });
+  });
+
+  $(document).on("click", "#dairy-farm-search-submit", function () {
+    $(".farm-listing-ajax-pagination").hide();
+    var farmPrice = $("#farm-price-option").val();
+    var farmLocation = $("#farm-location-option").val();
+    var farmLandsize = $("#farm-landsize-option").val();
+    var farmCowcapacity = $("#farm-cowcapacity-option").val();
+    $.ajax({
+      type: "POST",
+      url: deleteListing.ajax_url,
+      data: {
+        action: "search_farm_listing",
+        farmPrice: farmPrice,
+        farmLocation: farmLocation,
+        farmLandsize: farmLandsize,
+        farmCowcapacity: farmCowcapacity,
+      },
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          $(".farm-listing-ajax-section .row").html(response.data.html);
+        } else {
+          alert("Error: " + response.data.message);
         }
       },
       error: function (xhr, status, error) {
