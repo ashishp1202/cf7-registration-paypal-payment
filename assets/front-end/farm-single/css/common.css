@@ -34,7 +34,7 @@ body {
   /* overflow: hidden; */
 }
 
-.main .container > h1 {
+.main .container>h1 {
   padding-top: 20px;
   padding-bottom: 10px;
 }
@@ -44,16 +44,26 @@ body {
 }
 
 .btn {
-  display: flex;
-  align-items: center;
-  background: rgb(62, 87, 138);
-  border-color: rgb(62, 87, 138);
-  padding: 8px 16px;
-  color: #fff;
-  text-decoration: none;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  border-radius: 0.5rem;
+  color: #ffffff !important;
+  border-width: 0px !important;
+  border-radius: 100px;
+  letter-spacing: 1px;
+  font-size: 14px;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  background-color: #000000;
+  padding-top: 15px !important;
+  padding-right: 35px !important;
+  padding-bottom: 15px !important;
+  padding-left: 35px !important;
+  display: inline-block;
+  font-family: 'Tinos', Georgia, "Times New Roman", serif;
+  line-height: 1.4em;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #2b79ee;
 }
 
 .btn span {

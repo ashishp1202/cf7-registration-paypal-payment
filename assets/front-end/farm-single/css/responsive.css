@@ -76,6 +76,11 @@
 		border-left: none !important;
 	}
 
+	.home-detail-section .header-btn-wrap {
+		margin-top: 15px;
+		text-align: left;
+	}
+
 	.home-feature-section {
 		padding-top: 30px !important;
 	}

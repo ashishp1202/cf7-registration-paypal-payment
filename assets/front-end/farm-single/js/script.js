@@ -21,9 +21,23 @@ $(document).ready(function () {
     $('.banner-slider').slick('slickGoTo', index);
   });
 
+  // Fanybox slider //
+  Fancybox.bind("[data-fancybox='gallery']", {
+    Thumbs: {
+      autoStart: true,
+    },
+  });
+
   /* match height card content */
   if ($(".farm-listing-ajax-section .farm-listing-item .farm-listing-item-title").length > 0) {
     $(".farm-listing-ajax-section .farm-listing-item .farm-listing-item-title").matchHeight({
+      byRow: true,
+      property: "min-height",
+    });
+  }
+
+  if ($(".farm-listing-ajax-section .farm-listing-item .farm-listing-item-capicity h3").length > 0) {
+    $(".farm-listing-ajax-section .farm-listing-item .farm-listing-item-capicity h3").matchHeight({
       byRow: true,
       property: "min-height",
     });

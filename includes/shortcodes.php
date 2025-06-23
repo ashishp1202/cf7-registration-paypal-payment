@@ -83,7 +83,7 @@ function cf7ra_display_listings($atts)
 
     $args = array(
         'post_type' => 'farm_listing',
-        'post_status' => 'published',
+        'post_status' => 'publish',
         'posts_per_page' => $atts['posts_per_page'],
         'paged' => $paged,
     );
@@ -137,28 +137,28 @@ function cf7ra_display_listings($atts)
                 </div>
                 <div class="farm-listing-item-capicity">
                     <h3 style="font-size: larger;"><?php echo get_the_title($post_id); ?></h3>
-                    <p><b>Asking Price: $</b><?php echo number_format($asking_price); ?></p>
+                    <p><b>Asking Price: $</b><?php echo (!empty($asking_price) && is_numeric($asking_price)) ? number_format($asking_price) : $asking_price; ?></p>
                     <p><b>Land Area: </b><?php echo $land_unit . " " . $land_unit_type; ?></p>
                     <p><b>Capacity: <?php echo $farm_capacity, ' Cows'; ?></b></p>
                 </div>
                 <div class="ajax-btn-wrap">
                     <a class="view-farm-detail-btn" href="<?php echo get_permalink($post_id); ?>">View more</a>
 
-                    <a class="add-remove-favorites add-to-fav-trigger"
+                    <button class="add-remove-favorites add-to-fav-trigger"
                         style="<?php if (!$is_favorite) {
                                     echo 'display: inline-block;';
                                 } else {
                                     echo 'display: none;';
                                 } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
-                        title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
+                        title="Add to Favorites"><i class="fa-regular fa-heart"></i></button>
 
-                    <a class="add-remove-favorites remove-from-fav-trigger"
+                    <button class="add-remove-favorites remove-from-fav-trigger"
                         style="<?php if ($is_favorite) {
                                     echo 'display: inline-block;';
                                 } else {
                                     echo 'display: none;';
                                 } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
-                        title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
+                        title="Remove from Favorites"><i class="fa-solid fa-heart"></i></button>
 
                 </div>
             </div>
@@ -231,28 +231,28 @@ function cf7ra_myfav_display_listings()
                         </div>
                         <div class="farm-listing-item-capicity">
                             <h3 style="font-size: larger;"><?php echo get_the_title($post_id); ?></h3>
-                            <p><b>Asking Price: $</b><?php echo number_format($asking_price); ?></p>
+                            <p><b>Asking Price: $</b><?php echo (!empty($asking_price) && is_numeric($asking_price)) ? number_format($asking_price) : $asking_price; ?></p>
                             <p><b>Land Area: </b><?php echo $land_unit . " " . $land_unit_type; ?></p>
                             <p><b>Capacity: <?php echo $farm_capacity, ' Cows'; ?></b></p>
                         </div>
                         <div class="ajax-btn-wrap">
                             <a class="view-farm-detail-btn" href="<?php echo get_permalink($post_id); ?>">View more</a>
 
-                            <a class="add-remove-favorites add-to-fav-trigger"
+                            <button class="add-remove-favorites add-to-fav-trigger"
                                 style="<?php if (!$is_favorite) {
                                             echo 'display: inline-block;';
                                         } else {
                                             echo 'display: none;';
                                         } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
-                                title="Add to Favorites"><i class="fa-regular fa-heart"></i></a>
+                                title="Add to Favorites"><i class="fa-regular fa-heart"></i></button>
 
-                            <a class="add-remove-favorites remove-from-fav-trigger"
+                            <button class="add-remove-favorites remove-from-fav-trigger"
                                 style="<?php if ($is_favorite) {
                                             echo 'display: inline-block;';
                                         } else {
                                             echo 'display: none;';
                                         } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
-                                title="Remove from Favorites"><i class="fa-solid fa-heart"></i></a>
+                                title="Remove from Favorites"><i class="fa-solid fa-heart"></i></button>
 
                         </div>
                     </div>
@@ -1593,7 +1593,7 @@ function cf7ra_fn_farmListing_searchFilters()
                         <option value="0-100000">Under $100,000</option>
                         <option value="100001-299999">$100,000 to $299,999</option>
                         <option value="300000-599999">$300,000 to $599,999</option>
-                        <option value="600000-999,999">$600,000 to $999,999</option>
+                        <option value="600000-999999">$600,000 to $999,999</option>
                         <option value="1000000-5000000">$1,000,000 to $5,000,000</option>
                         <option value="5000000-10000000">$5,000,000 and $10,000,000</option>
                         <option value="10000000-10000000000">$10,000,000 and Up</option>

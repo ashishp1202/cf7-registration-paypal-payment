@@ -1379,8 +1379,8 @@ add_action('manage_farm_listing_posts_custom_column', 'show_asking_price_column'
 function show_asking_price_column($column, $post_id)
 {
     if ($column == 'asking_price') {
-        $price = get_post_meta($post_id, 'cf7ra_field_mappings_asking_price', true);
-        echo $price ? '$' . number_format($price) : '—';
+        $asking_price = get_post_meta($post_id, 'cf7ra_field_mappings_asking_price', true);
+        echo (!empty($asking_price) && is_numeric($asking_price)) ? "$" . number_format($asking_price) : $asking_price;
     }
     if ($column === 'farm_state') {
         $farm_state = get_post_meta($post_id, 'cf7ra_field_mappings_address_state', true);

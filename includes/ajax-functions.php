@@ -113,7 +113,7 @@ function fn_search_farm_listing()
 
     $args = array(
         'post_type' => 'farm_listing',
-        'post_status' => 'published',
+        'post_status' => 'publish',
         'posts_per_page' => -1,
         'meta_query'     => $metaQuery,
     );

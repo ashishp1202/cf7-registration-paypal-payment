@@ -164,12 +164,12 @@
   visibility: hidden;
 }
 
-.radio_btn_wrap input:checked + .wpcf7-list-item-label::before {
+.radio_btn_wrap input:checked+.wpcf7-list-item-label::before {
   border-color: #2b79ee;
   background: #2b79ee;
 }
 
-.radio_btn_wrap input:checked + .wpcf7-list-item-label::after {
+.radio_btn_wrap input:checked+.wpcf7-list-item-label::after {
   opacity: 1;
   visibility: visible;
 }
@@ -201,12 +201,12 @@
   border-radius: 0;
 }
 
-.check_btn_wrap input:checked + .wpcf7-list-item-label::after {
+.check_btn_wrap input:checked+.wpcf7-list-item-label::after {
   border-radius: 0;
   display: none;
 }
 
-.check_btn_wrap input:checked + .wpcf7-list-item-label::before {
+.check_btn_wrap input:checked+.wpcf7-list-item-label::before {
   content: "\2713";
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   font-size: 15px;
@@ -238,6 +238,7 @@
   background: #454545;
   color: #ffffff;
 }
+
 #mfcf7_zl_add_file {
   color: #ffffff !important;
   border-width: 0px !important;
@@ -254,6 +255,7 @@
   margin-bottom: 0px !important;
   margin-left: 0px !important;
 }
+
 .padding-up-btm-30 {
   padding: 30px 0;
 }
@@ -263,9 +265,11 @@
   background-color: #000000 !important;
   margin-right: 20px;
 }
+
 .my-fav-listing-btn::after {
   content: none !important;
 }
+
 .my-fav-listing-btn:hover {
   padding: 0.3em 1em !important;
 }
@@ -274,6 +278,7 @@
   width: 300px;
   max-height: 300px;
 }
+
 @media screen and (max-width: 767px) {
   .col_half {
     -webkit-box-flex: 0;
@@ -282,6 +287,7 @@
     max-width: 100%;
   }
 }
+
 /** Single Dairy Farm page*/
 
 /* 2. home-header-menu-section */
@@ -486,13 +492,16 @@
   -webkit-line-clamp: unset;
   max-height: none;
 }
+
 .farm-house-full-description {
   display: -webkit-box;
-  -webkit-line-clamp: 4; /* Show only 4 lines */
+  -webkit-line-clamp: 5;
+  /* Show only 5 lines */
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: all 0.3s ease;
 }
+
 .home-feature-section .home-feature-item .home-feature-item-content ul {
   padding-left: 15px;
   margin: 0;

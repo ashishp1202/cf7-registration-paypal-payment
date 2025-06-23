@@ -50,7 +50,9 @@ get_header(); ?>
                             <div class="banner-slider">
                                 <?php foreach ($photo_url as $image_url) { ?>
                                     <div class="slider-item">
-                                        <img src="<?php echo $image_url; ?>" alt="image">
+                                        <a href="<?php echo $image_url; ?>" data-fancybox="gallery">
+                                            <img src="<?php echo $image_url; ?>" alt="image">
+                                        </a>
                                     </div>
                                 <?php } ?>
                             </div>
@@ -71,30 +73,32 @@ get_header(); ?>
 
                 <div class="home-price-wrap">
                     <div class="row align-items-center justify-content-between">
-                        <div class="cell-md-9">
+                        <div class="cell-md-6">
                             <div class="home-price"><b>Asking Price: $</b><?php echo $asking_price; ?></div>
                         </div>
 
 
-                        <div class="cell-md-3">
-                            <div class="header-btn-wrap">
+                        <div class="cell-md-6">
+                            <div class="header-btn-wrap text-right">
                                 <button style="<?php if (!$is_favorite) {
-                                                    echo 'display: inline-block;';
-                                                } else {
-                                                    echo 'display: none;';
-                                                } ?>" href="javascript:void();" class="btn uppercase add-remove-favorites add-to-fav-trigger" data-post-id="<?php echo $post_id; ?>" title="Add to Favorites">
+                                    echo 'display: inline-block;';
+                                } else {
+                                    echo 'display: none;';
+                                } ?>" href="javascript:void();"
+                                    class="btn uppercase add-remove-favorites add-to-fav-trigger"
+                                    data-post-id="<?php echo $post_id; ?>" title="Add to Favorites">
                                     <i class="fa-regular fa-heart"></i>
                                     <span>Add to Favorites</span>
                                 </button>
 
 
-                                <button class="btn uppercase add-remove-favorites remove-from-fav-trigger"
-                                    style="<?php if ($is_favorite) {
-                                                echo 'display: inline-block;';
-                                            } else {
-                                                echo 'display: none;';
-                                            } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
-                                    title="Remove from Favorites"><i class="fa-solid fa-heart"></i><span>Remove from Favorites</span></button>
+                                <button class="btn uppercase add-remove-favorites remove-from-fav-trigger" style="<?php if ($is_favorite) {
+                                    echo 'display: inline-block;';
+                                } else {
+                                    echo 'display: none;';
+                                } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
+                                    title="Remove from Favorites"><i class="fa-solid fa-heart"></i><span>Remove from
+                                        Favorites</span></button>
                             </div>
                         </div>
                     </div>
@@ -122,7 +126,8 @@ get_header(); ?>
                                     <span class="bold">Status :</span> Active
                                 </li>
                                 <li class="home-feature">
-                                    <span class="bold">Price :</span> <?php echo "$" . number_format($asking_price); ?>
+                                    <span class="bold">Price :</span>
+                                    <?php echo (!empty($asking_price) && is_numeric($asking_price)) ? number_format($asking_price) : $asking_price; ?>
                                 </li>
                                 <li class="home-feature">
                                     <span class="bold">Land :</span> <?php echo $land_unit . " " . $land_unit_type; ?>
@@ -146,7 +151,8 @@ get_header(); ?>
                                     <span class="bold">Land Desc :</span> <?php echo $short_description; ?>
                                 </li>
                                 <li class="home-feature">
-                                    <span class="bold">Address :</span> <?php echo $street_address . ", " . $address_city . ", " . $address_state; ?>
+                                    <span class="bold">Address :</span>
+                                    <?php echo $street_address . ", " . $address_city . ", " . $address_state; ?>
                                 </li>
 
 
@@ -172,7 +178,13 @@ get_header(); ?>
                             <div class="home-feature-item-content farm-house-full-description">
                                 <?php echo nl2br(esc_html($description_buyers_read)); ?>
                             </div>
-                            <button href="javascript:void(0);" class="btn uppercase read-more-toggle">Show More</button>
+
+                            <?php
+                            if (str_word_count(strip_tags($description_buyers_read)) > 200): ?>
+                                <button href="javascript:void(0);" class="btn uppercase read-more-toggle">Show More</button>
+                                <?php
+                            endif; 
+                            ?>
                         </div>
                     </div>
                 </div>
