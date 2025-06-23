@@ -1716,5 +1716,120 @@ function cf7ra_fn_farmListing_searchFilters()
             </ul>
         </div>
     </section>
-<?php return ob_get_clean();
+    <?php return ob_get_clean();
+}
+
+add_shortcode('cf7ra_sold_listings', 'cf7ra_sold_display_listings');
+function cf7ra_sold_display_listings($atts)
+{
+
+
+    $atts = shortcode_atts(array(
+        'posts_per_page' => 6
+    ), $atts, 'custom_posts');
+
+    $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+
+    $args = array(
+        'post_type' => 'farm_listing',
+        'post_status' => 'publish',
+        'posts_per_page' => $atts['posts_per_page'],
+        'paged' => $paged,
+        'meta_key' => 'cf7ra_field_mappings_farm_status',
+        'meta_compare' => '=',
+        'meta_value' => 'Sold',
+    );
+
+    $listings = new WP_Query($args);
+
+    if (!$listings->have_posts()) {
+        return '<p>You have no listings.</p>';
+    }
+
+    ob_start();
+    echo '<section class="farm-listing-ajax-section">';
+    echo '<div class="row">';
+
+    $i = 1;
+    while ($listings->have_posts()):
+        $listings->the_post();
+        $post_id = get_the_ID();
+
+        $farm_capacity = get_post_meta($post_id, 'cf7ra_field_mappings_farm_capacity', true);
+        $asking_price = get_post_meta($post_id, 'cf7ra_field_mappings_asking_price', true);
+        $street_address = get_post_meta($post_id, 'cf7ra_field_mappings_street_address', true);
+        $address_city = get_post_meta($post_id, 'cf7ra_field_mappings_address_city', true);
+        $address_state = get_post_meta($post_id, 'cf7ra_field_mappings_address_state', true);
+        $address_sip = get_post_meta($post_id, 'cf7ra_field_mappings_address_sip', true);
+        $land_unit_type = get_post_meta($post_id, 'cf7ra_field_mappings_land_unit_type', true);
+        if ($land_unit_type === 'Acre') {
+            $land_unit = get_post_meta($post_id, 'cf7ra_field_mappings_total_acres', true);
+        } else {
+            $land_unit = get_post_meta($post_id, 'cf7ra_field_mappings_total_hectare', true);
+        }
+
+        $nonce = wp_create_nonce('delete_listing_' . $post_id);
+        $user_id = get_current_user_id();
+        if ($user_id) {
+            $favorites = get_user_meta($user_id, 'favorite_posts', true);
+            $is_favorite = is_array($favorites) && in_array($post_id, $favorites);
+        }
+    ?>
+        <div class="cell-md-4">
+            <div class="farm-listing-item">
+                <div class="farm-listing-item-image">
+                    <a href="<?php echo get_permalink($post_id); ?>">
+                        <img src="<?php echo get_the_post_thumbnail_url($post_id, 'large'); ?>" />
+                    </a>
+                </div>
+                <div class="farm-listing-item-capicity">
+                    <h3 style="font-size: larger;"><?php echo get_the_title($post_id); ?></h3>
+                    <p><b>Asking Price: $</b><?php echo (!empty($asking_price) && is_numeric($asking_price)) ? number_format($asking_price) : $asking_price; ?></p>
+                    <p><b>Land Area: </b><?php echo $land_unit . " " . $land_unit_type; ?></p>
+                    <p><b>Capacity: <?php echo $farm_capacity, ' Cows'; ?></b></p>
+                </div>
+                <div class="ajax-btn-wrap">
+                    <a class="view-farm-detail-btn" href="<?php echo get_permalink($post_id); ?>">View more</a>
+
+                    <button class="add-remove-favorites add-to-fav-trigger"
+                        style="<?php if (!$is_favorite) {
+                                    echo 'display: inline-block;';
+                                } else {
+                                    echo 'display: none;';
+                                } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
+                        title="Add to Favorites"><i class="fa-regular fa-heart"></i></button>
+
+                    <button class="add-remove-favorites remove-from-fav-trigger"
+                        style="<?php if ($is_favorite) {
+                                    echo 'display: inline-block;';
+                                } else {
+                                    echo 'display: none;';
+                                } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
+                        title="Remove from Favorites"><i class="fa-solid fa-heart"></i></button>
+
+                </div>
+            </div>
+        </div>
+<?php
+        $i++;
+    endwhile;
+    wp_reset_postdata();
+
+    echo '</div>';
+
+    // Pagination
+    $big = 999999999; // need an unlikely integer
+    echo '<div class="farm-listing-ajax-pagination">';
+    echo paginate_links(array(
+        'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+        'format' => '?paged=%#%',
+        'current' => max(1, $paged),
+        'total' => $listings->max_num_pages,
+        'prev_text' => __('« Prev'),
+        'next_text' => __('Next »'),
+    ));
+    echo '</div>';
+
+    echo '</section>';
+    return ob_get_clean();
 }

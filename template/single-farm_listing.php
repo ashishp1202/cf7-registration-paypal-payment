@@ -43,6 +43,13 @@ get_header(); ?>
             $description_buyers_read = get_post_meta($post_id, 'cf7ra_field_mappings_description_buyers_read', true);
             $farm_status = get_post_meta($post_id, 'cf7ra_field_mappings_farm_status', true);
 
+            $featured_image_url = get_the_post_thumbnail_url($post_id, 'full');
+
+            // Check if there's a featured image
+            if ($featured_image_url) {
+                // Add it to the beginning of the array
+                array_unshift($photo_url, $featured_image_url);
+            }
             ?>
             <?php if (!empty($photo_url)) { ?>
                 <section class="home-banner-slider-section">
