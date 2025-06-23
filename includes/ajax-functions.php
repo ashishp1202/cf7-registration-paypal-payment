@@ -92,6 +92,14 @@ function fn_search_farm_listing()
             'compare' => '=',
         );
     }
+    if (isset($_POST['farmStatus']) && !empty($_POST['farmStatus'])) {
+        $farmStatus = $_POST['farmStatus'];
+        $metaQuery[] = array(
+            'key'     => 'cf7ra_field_mappings_farm_status',
+            'value'   => $farmStatus,
+            'compare' => '=',
+        );
+    }
     if (isset($_POST['farmLandsize']) && !empty($_POST['farmLandsize'])) {
         $farmLandsize = $_POST['farmLandsize'];
         $metaQuery[] = array(

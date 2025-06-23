@@ -41,6 +41,7 @@ get_header(); ?>
                 $land_unit = get_post_meta($post_id, 'cf7ra_field_mappings_total_hectare', true);
             }
             $description_buyers_read = get_post_meta($post_id, 'cf7ra_field_mappings_description_buyers_read', true);
+            $farm_status = get_post_meta($post_id, 'cf7ra_field_mappings_farm_status', true);
 
             ?>
             <?php if (!empty($photo_url)) { ?>
@@ -74,17 +75,17 @@ get_header(); ?>
                 <div class="home-price-wrap">
                     <div class="row align-items-center justify-content-between">
                         <div class="cell-md-6">
-                            <div class="home-price"><b>Asking Price: $</b><?php echo $asking_price; ?></div>
+                            <div class="home-price"><b>Asking Price: $</b><?php echo (!empty($asking_price) && is_numeric($asking_price)) ? number_format($asking_price) : $asking_price; ?></div>
                         </div>
 
 
                         <div class="cell-md-6">
                             <div class="header-btn-wrap text-right">
                                 <button style="<?php if (!$is_favorite) {
-                                    echo 'display: inline-block;';
-                                } else {
-                                    echo 'display: none;';
-                                } ?>" href="javascript:void();"
+                                                    echo 'display: inline-block;';
+                                                } else {
+                                                    echo 'display: none;';
+                                                } ?>" href="javascript:void();"
                                     class="btn uppercase add-remove-favorites add-to-fav-trigger"
                                     data-post-id="<?php echo $post_id; ?>" title="Add to Favorites">
                                     <i class="fa-regular fa-heart"></i>
@@ -93,10 +94,10 @@ get_header(); ?>
 
 
                                 <button class="btn uppercase add-remove-favorites remove-from-fav-trigger" style="<?php if ($is_favorite) {
-                                    echo 'display: inline-block;';
-                                } else {
-                                    echo 'display: none;';
-                                } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
+                                                                                                                        echo 'display: inline-block;';
+                                                                                                                    } else {
+                                                                                                                        echo 'display: none;';
+                                                                                                                    } ?>" href="javascript:void();" data-post-id="<?php echo $post_id; ?>"
                                     title="Remove from Favorites"><i class="fa-solid fa-heart"></i><span>Remove from
                                         Favorites</span></button>
                             </div>
@@ -123,7 +124,7 @@ get_header(); ?>
 
                             <ul class="home-feature-item-list">
                                 <li class="home-feature">
-                                    <span class="bold">Status :</span> Active
+                                    <span class="bold">Status :</span> <?php echo ($farm_status && !empty($farm_status)) ? $farm_status : 'Active'; ?>
                                 </li>
                                 <li class="home-feature">
                                     <span class="bold">Price :</span>
@@ -182,8 +183,8 @@ get_header(); ?>
                             <?php
                             if (str_word_count(strip_tags($description_buyers_read)) > 200): ?>
                                 <button href="javascript:void(0);" class="btn uppercase read-more-toggle">Show More</button>
-                                <?php
-                            endif; 
+                            <?php
+                            endif;
                             ?>
                         </div>
                     </div>

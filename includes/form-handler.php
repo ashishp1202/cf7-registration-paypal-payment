@@ -157,6 +157,7 @@ function cf7ra_handle_form_submission($contact_form)
             }
         }
     }
+    add_post_meta($farmPostID, 'cf7ra_field_mappings_farm_status', 'Active', true);
 
     // Check if 'multiplefile' field has uploaded files
     if (!empty($uploaded_files['multiplefile'])) {

@@ -128,6 +128,7 @@ jQuery(document).ready(function ($) {
     var farmLocation = $("#farm-location-option").val();
     var farmLandsize = $("#farm-landsize-option").val();
     var farmCowcapacity = $("#farm-cowcapacity-option").val();
+    var farmStatus = $("#farm-status-option").val();
     $.ajax({
       type: "POST",
       url: deleteListing.ajax_url,
@@ -137,6 +138,7 @@ jQuery(document).ready(function ($) {
         farmLocation: farmLocation,
         farmLandsize: farmLandsize,
         farmCowcapacity: farmCowcapacity,
+        farmStatus: farmStatus,
       },
       dataType: "json",
       success: function (response) {

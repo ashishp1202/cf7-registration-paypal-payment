@@ -74,12 +74,23 @@ function cf7ra__show_from_data($post)
     // $photo_url = get_post_meta($post->ID, 'cf7ra_field_mappings_photo_upload', true);
     $photo_url = get_post_meta($post->ID, 'cf7ra_field_mappings_photo_upload', true);
     $photo_description = get_post_meta($post->ID, 'cf7ra_field_mappings_photo_desc', true);
+    $farm_status = get_post_meta($post->ID, 'cf7ra_field_mappings_farm_status', true);
 
 
 
     echo '<table class="cf7pap-box-data form-table">' .
         '<style>.inside-field td, .inside-field th{ padding-top: 5px; padding-bottom: 5px;}</style>';
 
+    echo '<tr class="form-field">' .
+        '<th scope="row">' .
+        '<label for="hcf_author">' . __('Farm Status', 'cf7-reg-paypal-addon') . '</label>' .
+        '</th>' .
+        '<td><select name="cf7ra_field_mappings_farm_status" id="cf7ra_field_mappings_farm_status" style="width:100%;">' .
+        '<option value="Active" ' . selected($farm_status, 'Active', false) . '>Active</option>' .
+        '<option value="Pending" ' . selected($farm_status, 'Pending', false) . '>Pending</option>' .
+        '<option value="Sold" ' . selected($farm_status, 'Sold', false) . '>Sold</option>' .
+        '</select>' .
+        '</tr>';
     echo '<tr class="form-field">' .
         '<th scope="row">' .
         '<label for="hcf_author">' . __('Listing Plan', 'cf7-reg-paypal-addon') . '</label>' .
@@ -1038,6 +1049,9 @@ function cf7ra_save_custom_meta_box_data($post_id)
     if (isset($_POST['cf7ra_field_mappings_listing_plan'])) {
         update_post_meta($post_id, 'cf7ra_field_mappings_listing_plan', sanitize_text_field($_POST['cf7ra_field_mappings_listing_plan']));
     }
+    if (isset($_POST['cf7ra_field_mappings_farm_status'])) {
+        update_post_meta($post_id, 'cf7ra_field_mappings_farm_status', sanitize_text_field($_POST['cf7ra_field_mappings_farm_status']));
+    }
 
     if (isset($_POST['cf7ra_field_mappings_asking_price'])) {
         $asking_price = (int) preg_replace('/\D/', '', $_POST['cf7ra_field_mappings_asking_price']);
@@ -1363,10 +1377,11 @@ function add_asking_price_column($columns)
     $new_columns['asking_price'] = 'Asking Price';
     $new_columns['farm_state'] = 'State';
     $new_columns['listing_plan'] = 'Listing Plan';
+    $new_columns['farm_status'] = 'Farm Status';
 
     // 3. Add the rest of the original columns, skipping ones we've already added
     foreach ($columns as $key => $value) {
-        if (!in_array($key, ['cb', 'asking_price', 'farm_state', 'listing_plan'])) {
+        if (!in_array($key, ['cb', 'asking_price', 'farm_state', 'listing_plan', 'farm_status'])) {
             $new_columns[$key] = $value;
         }
     }
@@ -1389,5 +1404,9 @@ function show_asking_price_column($column, $post_id)
     if ($column === 'listing_plan') {
         $listing_plan = get_post_meta($post_id, 'cf7ra_field_mappings_listing_plan', true);
         echo $listing_plan ? $listing_plan : '—';
+    }
+    if ($column === 'farm_status') {
+        $farm_status = get_post_meta($post_id, 'cf7ra_field_mappings_farm_status', true);
+        echo $farm_status ? $farm_status : '—';
     }
 }
